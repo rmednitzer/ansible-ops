@@ -1,0 +1,12 @@
+---
+# Development inventory
+# Define hosts and groups for the development environment
+
+all:
+  children:
+    # web_servers:
+    #   hosts:
+    #     dev-web01.example.com:
+    # db_servers:
+    #   hosts:
+    #     dev-db01.example.com:
