@@ -1,0 +1,13 @@
+---
+# Production inventory
+# Define hosts and groups for the production environment
+
+all:
+  children:
+    # web_servers:
+    #   hosts:
+    #     web01.example.com:
+    #     web02.example.com:
+    # db_servers:
+    #   hosts:
+    #     db01.example.com:

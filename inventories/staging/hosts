@@ -1,0 +1,12 @@
+---
+# Staging inventory
+# Define hosts and groups for the staging environment
+
+all:
+  children:
+    # web_servers:
+    #   hosts:
+    #     staging-web01.example.com:
+    # db_servers:
+    #   hosts:
+    #     staging-db01.example.com:

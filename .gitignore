@@ -1,0 +1,31 @@
+# Ansible
+*.retry
+collections/
+
+# Python
+*.pyc
+__pycache__/
+*.egg-info/
+.venv/
+venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets - never commit unencrypted secrets
+*.pem
+*.key
+!vault_*.yml
+
+# Temporary files
+*.tmp
+*.bak
+*.log
