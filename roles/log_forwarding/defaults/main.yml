@@ -6,10 +6,10 @@
 #   - NIS2 Art 21.2(b) — incident handling (forensic correlation)
 #   - GDPR Art 5(2) — accountability (centralised audit evidence)
 #   - GDPR Art 32 — security of processing
-#   - CTL-0002 — immutable evidence store with retention controls
-#   - CTL-0003 — logging legality, minimisation, and forensic correlation
-#   - POL-02 — incident response (Wazuh/Falco/Alertmanager integration)
-#   - POL-03 — cryptography policy (TLS for data in transit)
+#   - CTL-002 — immutable evidence store with retention controls
+#   - CTL-003 — logging legality, minimisation, and forensic correlation
+#   - POL-002 — incident response (Wazuh/Falco/Alertmanager integration)
+#   - POL-003 — cryptography policy (TLS for data in transit)
 #   - ISO 27001:2022 A.8.15 — logging
 #   - ISO 27001:2022 A.8.16 — monitoring activities
 
@@ -24,7 +24,7 @@ log_forwarding_protocol: "tcp"
 log_forwarding_server: ""
 log_forwarding_port: 514
 
-# TLS for log forwarding — POL-03 cryptography policy: data in transit encrypted
+# TLS for log forwarding — POL-003 cryptography policy: data in transit encrypted
 log_forwarding_tls_enabled: false
 log_forwarding_tls_ca_cert: ""
 log_forwarding_tls_cert: ""

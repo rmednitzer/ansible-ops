@@ -15,8 +15,8 @@ This repository implements technical controls mapped to:
 - **ISO/IEC 27001:2022** — Annex A controls
 
 Controls and policies are defined locally in `docs/compliance-controls.yml`:
-- Control catalog: `CTL-0001`, `CTL-0002`, `CTL-0003`
-- ISMS policies: `POL-01`, `POL-02`, `POL-03`, `POL-04`, `POL-05`
+- Control catalog: `CTL-001`, `CTL-002`, `CTL-003`
+- ISMS policies: `POL-001`, `POL-002`, `POL-003`, `POL-004`, `POL-005`
 
 When modifying roles, preserve compliance cross-references in `defaults/main.yml` headers.
 When adding new controls, map them to the relevant regulatory articles and add definitions to `docs/compliance-controls.yml`.

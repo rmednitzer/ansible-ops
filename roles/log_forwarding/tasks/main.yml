@@ -1,6 +1,6 @@
 ---
 # Log forwarding role for Ubuntu 24.04 LTS
-# CTL-0003, NIS2 Art 21.2(a), GDPR Art 5(2)
+# CTL-003, NIS2 Art 21.2(a), GDPR Art 5(2)
 
 - name: Ensure rsyslog is installed
   ansible.builtin.apt:

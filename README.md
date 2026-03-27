@@ -50,16 +50,16 @@ ansible-playbook -i inventories/<env>/hosts playbooks/site-common.yml --tags ssh
 
 | Role | Purpose | Key Compliance References |
 |------|---------|---------------------------|
-| `common` | Base packages, timezone, sysctl, kernel/FS hardening, log retention | CTL-0002, CTL-0003, POL-04, NIS2 Art 21.2(a)(e), GDPR Art 25/32, CRA Annex I |
-| `users` | User accounts, sudo, password policy, account lockout | CTL-0001, POL-01, POL-03, NIS2 Art 21.2(i), GDPR Art 32 |
-| `ntp` | Chrony time synchronisation (Austrian/EU NTP pools, NTS) | CTL-0003, POL-02, POL-03, ISO 27001 A.8.17 |
-| `ssh_hardening` | SSH server hardening, legal banner, approved ciphers | CTL-0001, POL-01, POL-03, NIS2 Art 21.2(h)(i) |
-| `ufw` | UFW firewall with default-deny, IPv6, rate limiting | POL-01, NIS2 Art 21.2(e), GDPR Art 32 |
-| `fail2ban` | Intrusion prevention with recidive jail | POL-02, NIS2 Art 21.2(b) |
-| `aide` | File integrity monitoring (AIDE) | CTL-0002, POL-02, POL-03, NIS2 Art 21.2(a), GDPR Art 32 |
-| `rkhunter` | Rootkit detection (hidden processes, kernel modules, signatures) | POL-02, NIS2 Art 21.2(a)(b), GDPR Art 32, ISO 27001 A.8.7 |
-| `log_forwarding` | Centralised log forwarding via rsyslog (TLS) | CTL-0002, CTL-0003, POL-02, POL-03, NIS2 Art 21.2(a), GDPR Art 5(2) |
-| `auditd` | System audit logging (CIS + NIS2/GDPR rules) | CTL-0002, CTL-0003, POL-04, POL-05, GDPR Art 5(2), NIS2 Art 21.2(a) |
+| `common` | Base packages, timezone, sysctl, kernel/FS hardening, log retention | CTL-002, CTL-003, POL-004, NIS2 Art 21.2(a)(e), GDPR Art 25/32, CRA Annex I |
+| `users` | User accounts, sudo, password policy, account lockout | CTL-001, POL-001, POL-003, NIS2 Art 21.2(i), GDPR Art 32 |
+| `ntp` | Chrony time synchronisation (Austrian/EU NTP pools, NTS) | CTL-003, POL-002, POL-003, ISO 27001 A.8.17 |
+| `ssh_hardening` | SSH server hardening, legal banner, approved ciphers | CTL-001, POL-001, POL-003, NIS2 Art 21.2(h)(i) |
+| `ufw` | UFW firewall with default-deny, IPv6, rate limiting | POL-001, NIS2 Art 21.2(e), GDPR Art 32 |
+| `fail2ban` | Intrusion prevention with recidive jail | POL-002, NIS2 Art 21.2(b) |
+| `aide` | File integrity monitoring (AIDE) | CTL-002, POL-002, POL-003, NIS2 Art 21.2(a), GDPR Art 32 |
+| `rkhunter` | Rootkit detection (hidden processes, kernel modules, signatures) | POL-002, NIS2 Art 21.2(a)(b), GDPR Art 32, ISO 27001 A.8.7 |
+| `log_forwarding` | Centralised log forwarding via rsyslog (TLS) | CTL-002, CTL-003, POL-002, POL-003, NIS2 Art 21.2(a), GDPR Art 5(2) |
+| `auditd` | System audit logging (CIS + NIS2/GDPR rules) | CTL-002, CTL-003, POL-004, POL-005, GDPR Art 5(2), NIS2 Art 21.2(a) |
 
 ## Repository Structure
 
@@ -95,7 +95,7 @@ Each role produces configuration artifacts that serve as compliance evidence:
 - **SSH banner** — legal monitoring notice per GDPR Art 5(2)
 - **Sysctl hardening** — kernel security parameters per CRA Annex I
 
-Log retention tiers are aligned with CTL-0002 evidence retention requirements (see `docs/compliance-controls.yml`):
+Log retention tiers are aligned with CTL-002 evidence retention requirements (see `docs/compliance-controls.yml`):
 - `governance`: 10 years (3650 days)
 - `incidents`: 5 years (1825 days)
 - `ci`: 3 years (1095 days)

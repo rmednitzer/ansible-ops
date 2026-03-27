@@ -1,6 +1,6 @@
 # Ansible managed - do not edit manually
 # Audit rules for Ubuntu 24.04 LTS
-# Compliance: NIS2 Art 21.2(a), GDPR Art 5(2), CTL-0003, CIS Benchmark
+# Compliance: NIS2 Art 21.2(a), GDPR Art 5(2), CTL-003, CIS Benchmark
 
 # Remove all existing rules
 -D
@@ -13,7 +13,7 @@
 {% if auditd_cis_rules %}
 # === CIS Benchmark-aligned rules ===
 
-# Time change events (forensic correlation integrity — CTL-0003)
+# Time change events (forensic correlation integrity — CTL-003)
 -a always,exit -F arch=b64 -S adjtimex -S settimeofday -S clock_settime -k time-change
 -a always,exit -F arch=b32 -S adjtimex -S settimeofday -S stime -S clock_settime -k time-change
 -w /etc/localtime -p wa -k time-change
@@ -103,7 +103,7 @@
 -a always,exit -F arch=b64 -S mount -S umount2 -F auid>=1000 -F auid!=4294967295 -k mounts
 -a always,exit -F arch=b32 -S mount -S umount -S umount2 -F auid>=1000 -F auid!=4294967295 -k mounts
 
-# Cron and scheduled tasks (change management — POL-05)
+# Cron and scheduled tasks (change management — POL-005)
 -w /etc/crontab -p wa -k cron
 -w /etc/cron.d/ -p wa -k cron
 -w /etc/cron.daily/ -p wa -k cron
@@ -118,7 +118,7 @@
 -w /etc/ufw/ -p wa -k firewall_config
 -w /etc/nftables.conf -p wa -k firewall_config
 
-# Cryptographic material changes (POL-03 — cryptography policy)
+# Cryptographic material changes (POL-003 — cryptography policy)
 -w /etc/ssl/ -p wa -k crypto_config
 -w /etc/ssh/ -p wa -k crypto_config
 

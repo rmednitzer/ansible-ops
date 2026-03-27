@@ -1,13 +1,13 @@
 # Ansible managed - do not edit manually
 # rsyslog forwarding configuration
-# Compliance: CTL-0003, NIS2 Art 21.2(a), GDPR Art 5(2)
+# Compliance: CTL-003, NIS2 Art 21.2(a), GDPR Art 5(2)
 
 # Rate limiting — GDPR Art 5(1)(c) data minimisation
 $SystemLogRateLimitInterval {{ log_forwarding_rate_limit_interval }}
 $SystemLogRateLimitBurst {{ log_forwarding_rate_limit_burst }}
 
 {% if log_forwarding_tls_enabled %}
-# TLS configuration — POL-03 cryptography policy
+# TLS configuration — POL-003 cryptography policy
 $DefaultNetstreamDriverCAFile {{ log_forwarding_tls_ca_cert }}
 {% if log_forwarding_tls_cert %}
 $DefaultNetstreamDriverCertFile {{ log_forwarding_tls_cert }}

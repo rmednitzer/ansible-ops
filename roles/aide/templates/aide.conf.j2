@@ -1,6 +1,6 @@
 # Ansible managed - do not edit manually
 # AIDE configuration for Ubuntu 24.04 LTS
-# Compliance: NIS2 Art 21.2(a), GDPR Art 32, CTL-0002
+# Compliance: NIS2 Art 21.2(a), GDPR Art 32, CTL-002
 
 database_in=file:{{ aide_db_path }}
 database_out=file:{{ aide_db_new_path }}
@@ -13,7 +13,7 @@ report_url=stdout
 # Rule definitions
 # p: permissions, i: inode, n: link count, u: user, g: group
 # s: size, b: block count, m: mtime, c: ctime, S: check for growing size
-# md5/sha256/sha512: hash algorithms (POL-03: no MD5 for compliance)
+# md5/sha256/sha512: hash algorithms (POL-003: no MD5 for compliance)
 NORMAL = p+i+n+u+g+s+b+m+c+sha256+sha512
 DIR = p+i+n+u+g
 PERMS = p+i+u+g
