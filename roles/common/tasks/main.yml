@@ -1,0 +1,44 @@
+---
+# Common role - Base system management for Ubuntu 24.04 LTS
+
+- name: Include package management tasks
+  ansible.builtin.import_tasks: packages.yml
+  tags:
+    - common
+    - packages
+
+- name: Include locale tasks
+  ansible.builtin.import_tasks: locale.yml
+  tags:
+    - common
+    - locale
+
+- name: Include timezone tasks
+  ansible.builtin.import_tasks: timezone.yml
+  tags:
+    - common
+    - timezone
+
+- name: Include sysctl tuning tasks
+  ansible.builtin.import_tasks: sysctl.yml
+  tags:
+    - common
+    - sysctl
+
+- name: Include automatic updates tasks
+  ansible.builtin.import_tasks: auto_updates.yml
+  tags:
+    - common
+    - auto-updates
+
+- name: Include journal tasks
+  ansible.builtin.import_tasks: journal.yml
+  tags:
+    - common
+    - journal
+
+- name: Include MOTD tasks
+  ansible.builtin.import_tasks: motd.yml
+  tags:
+    - common
+    - motd

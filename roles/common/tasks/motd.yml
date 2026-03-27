@@ -1,0 +1,20 @@
+---
+# MOTD banner tasks
+
+- name: Deploy custom MOTD script
+  ansible.builtin.template:
+    src: motd.j2
+    dest: /etc/update-motd.d/99-ansible
+    owner: root
+    group: root
+    mode: "0755"
+  become: true
+  when: common_motd_enabled
+
+- name: Disable default Ubuntu MOTD news
+  ansible.builtin.lineinfile:
+    path: /etc/default/motd-news
+    regexp: "^ENABLED="
+    line: "ENABLED=0"
+  become: true
+  when: common_motd_enabled

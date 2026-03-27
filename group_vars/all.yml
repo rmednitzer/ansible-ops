@@ -1,3 +1,18 @@
 ---
 # Global variables applied to all hosts
 # Override per-environment in inventories/<env>/group_vars/
+
+# Common role
+common_timezone: "UTC"
+common_locale: "en_US.UTF-8"
+common_auto_updates_enabled: true
+common_auto_updates_reboot: false
+
+# NTP role
+# ntp_servers:  # Uncomment to override default Ubuntu pool servers
+#   - "ntp1.example.com iburst"
+#   - "ntp2.example.com iburst"
+
+# SSH hardening role
+ssh_permit_root_login: "prohibit-password"
+ssh_password_authentication: false

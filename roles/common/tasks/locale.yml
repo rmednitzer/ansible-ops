@@ -1,0 +1,20 @@
+---
+# Locale configuration tasks
+
+- name: Ensure locale is generated
+  community.general.locale_gen:
+    name: "{{ common_locale }}"
+    state: present
+  become: true
+
+- name: Set default locale
+  ansible.builtin.copy:
+    dest: /etc/default/locale
+    content: |
+      LANG={{ common_locale }}
+      LANGUAGE={{ common_language }}
+      LC_ALL={{ common_locale }}
+    owner: root
+    group: root
+    mode: "0644"
+  become: true

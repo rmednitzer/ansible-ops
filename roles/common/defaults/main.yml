@@ -1,0 +1,78 @@
+---
+# Common role defaults
+
+# Timezone
+common_timezone: "UTC"
+
+# Locale
+common_locale: "en_US.UTF-8"
+common_language: "en_US.UTF-8"
+
+# Base packages to install
+common_packages:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg
+  - lsb-release
+  - software-properties-common
+  - vim
+  - htop
+  - tmux
+  - git
+  - wget
+  - unzip
+  - jq
+  - net-tools
+  - dnsutils
+  - mtr-tiny
+  - rsync
+  - tree
+  - ncdu
+  - iotop
+  - sysstat
+  - logrotate
+
+# Packages to remove (bloat / unnecessary)
+common_packages_remove: []
+
+# Automatic security updates via unattended-upgrades
+common_auto_updates_enabled: true
+common_auto_updates_mail: ""
+common_auto_updates_reboot: false
+common_auto_updates_reboot_time: "02:00"
+
+# Sysctl tuning
+common_sysctl_settings:
+  # Network performance
+  net.core.rmem_max: 16777216
+  net.core.wmem_max: 16777216
+  net.ipv4.tcp_rmem: "4096 87380 16777216"
+  net.ipv4.tcp_wmem: "4096 65536 16777216"
+  net.core.netdev_max_backlog: 5000
+  # Security
+  net.ipv4.conf.all.rp_filter: 1
+  net.ipv4.conf.default.rp_filter: 1
+  net.ipv4.conf.all.accept_redirects: 0
+  net.ipv4.conf.default.accept_redirects: 0
+  net.ipv4.conf.all.send_redirects: 0
+  net.ipv4.conf.default.send_redirects: 0
+  net.ipv4.conf.all.accept_source_route: 0
+  net.ipv4.conf.default.accept_source_route: 0
+  net.ipv4.icmp_echo_ignore_broadcasts: 1
+  net.ipv4.icmp_ignore_bogus_error_responses: 1
+  # IPv6 hardening (disable if not needed)
+  net.ipv6.conf.all.accept_redirects: 0
+  net.ipv6.conf.default.accept_redirects: 0
+  # VM tuning
+  vm.swappiness: 10
+  vm.dirty_ratio: 15
+  vm.dirty_background_ratio: 5
+  # File handles
+  fs.file-max: 2097152
+
+# Systemd journal max size
+common_journal_max_size: "500M"
+
+# MOTD banner
+common_motd_enabled: true

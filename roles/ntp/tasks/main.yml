@@ -1,0 +1,55 @@
+---
+# NTP role - Chrony time synchronization for Ubuntu 24.04 LTS
+
+- name: Remove systemd-timesyncd if present
+  ansible.builtin.apt:
+    name: systemd-timesyncd
+    state: absent
+    purge: true
+  become: true
+
+- name: Install chrony
+  ansible.builtin.apt:
+    name: chrony
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+  become: true
+
+- name: Deploy chrony configuration
+  ansible.builtin.template:
+    src: chrony.conf.j2
+    dest: /etc/chrony/chrony.conf
+    owner: root
+    group: root
+    mode: "0644"
+    backup: true
+  become: true
+  notify: Restart chrony
+
+- name: Ensure chrony log directory exists
+  ansible.builtin.file:
+    path: "{{ ntp_logdir }}"
+    state: directory
+    owner: _chrony
+    group: _chrony
+    mode: "0750"
+  become: true
+
+- name: Enable and start chrony
+  ansible.builtin.systemd:
+    name: chrony
+    state: started
+    enabled: true
+  become: true
+
+- name: Verify time synchronization status
+  ansible.builtin.command:
+    cmd: chronyc tracking
+  changed_when: false
+  become: true
+  register: ntp_tracking
+
+- name: Display NTP sync status
+  ansible.builtin.debug:
+    msg: "{{ ntp_tracking.stdout_lines }}"
