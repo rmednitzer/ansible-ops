@@ -1,0 +1,63 @@
+---
+name: Bug Report
+description: Report a bug or unexpected behavior
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to report a bug. Please fill out the sections below.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear description of the bug
+      placeholder: Describe what happened
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the behavior
+      placeholder: |
+        1. Run playbook '...'
+        2. With inventory '...'
+        3. See error
+    validations:
+      required: true
+
+  - type: input
+    id: ansible-version
+    attributes:
+      label: Ansible Version
+      description: Output of `ansible --version`
+      placeholder: "ansible [core 2.15.0]"
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Target OS
+      description: Operating system of the target host
+      placeholder: "Ubuntu 24.04 LTS"
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other context, logs, or screenshots
