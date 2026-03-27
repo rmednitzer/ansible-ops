@@ -2,7 +2,24 @@
 
 ## Project Overview
 
-This is an Ansible operations repository for infrastructure automation and configuration management. Licensed under GNU GPLv3.
+This is an Ansible operations repository for infrastructure automation and configuration management, aligned with EU and Austrian regulatory requirements. Licensed under GNU GPLv3.
+
+## Compliance Alignment
+
+This repository implements technical controls mapped to:
+
+- **NIS2 Directive (EU 2022/2555)** — Art 20-23: risk management, incident handling, reporting
+- **NISG 2026 (Austrian transposition)** — effective 2026-10-01
+- **Cyber Resilience Act (EU 2024/2847)** — Annex I: secure-by-design
+- **GDPR (EU 2016/679) / Austrian DSG** — Art 5, 25, 32: data protection by design
+- **ISO/IEC 27001:2022** — Annex A controls
+
+Controls are cross-referenced to the `platform-assurance` repository:
+- Control catalog: `CTL-0001` through `CTL-0010`
+- ISMS policies: `POL-01` through `POL-10`
+
+When modifying roles, preserve compliance cross-references in `defaults/main.yml` headers.
+When adding new controls, map them to the relevant regulatory articles and platform-assurance control IDs.
 
 ## Repository Structure
 
@@ -53,7 +70,10 @@ ansible-ops/
 
 ## Current State
 
-The repository skeleton is initialized with the full directory structure, configuration files, and per-environment inventories. No roles or playbooks have been created yet.
+The repository contains a complete compliance-aligned hardening baseline with 9 roles:
+`common`, `users`, `ntp`, `ssh_hardening`, `ufw`, `fail2ban`, `aide`, `log_forwarding`, `auditd`.
+
+The main playbook `playbooks/site-common.yml` applies all roles to Ubuntu 24.04 LTS hosts.
 
 ## Development Conventions
 

@@ -1,13 +1,18 @@
 # Ansible managed - do not edit manually
 # Password quality requirements
+# POL-03 — access control policy
+# GDPR Art 32 — security of processing
 
 minlen = {{ users_password_min_length }}
 dcredit = -1
 ucredit = -1
 lcredit = -1
 ocredit = -1
-minclass = 3
+minclass = {{ users_password_min_class }}
 maxrepeat = 3
 maxclassrepeat = 4
 gecoscheck = 1
+dictcheck = 1
+usercheck = 1
 enforcing = 1
+retry = 3

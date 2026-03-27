@@ -1,0 +1,43 @@
+---
+# AIDE (Advanced Intrusion Detection Environment) role defaults
+#
+# Compliance references:
+#   - NIS2 Art 21.2(a) — information system security
+#   - NIS2 Art 21.2(b) — incident handling (detect tampering)
+#   - GDPR Art 32 — security of processing (integrity assurance)
+#   - POL-04 — incident response policy (detection phase)
+#   - CTL-0004 — immutable evidence store (integrity verification)
+#   - CRA Annex I Part I — secure-by-design, tamper detection
+#   - ISO 27001:2022 A.8.9 — configuration management
+
+# Enable AIDE
+aide_enabled: true
+
+# AIDE database paths
+aide_db_path: "/var/lib/aide/aide.db"
+aide_db_new_path: "/var/lib/aide/aide.db.new"
+
+# Schedule AIDE checks via cron
+aide_cron_enabled: true
+aide_cron_schedule: "0 4 * * *"
+
+# Report delivery
+aide_report_path: "/var/log/aide/aide-check.log"
+aide_mailto: ""
+
+# Directories to monitor for integrity
+aide_monitored_dirs:
+  - /etc
+  - /usr/bin
+  - /usr/sbin
+  - /usr/lib
+  - /boot
+
+# Directories to exclude from monitoring
+aide_excluded_dirs:
+  - /etc/mtab
+  - /etc/adjtime
+  - /etc/resolv.conf
+
+# Initialize database on first run
+aide_init_db: true

@@ -1,5 +1,6 @@
 # Ansible managed - do not edit manually
 # Chrony configuration for Ubuntu 24.04 LTS
+# Compliance: CTL-0006, POL-04, ISO 27001:2022 A.8.17
 
 # NTP servers
 {% for server in ntp_servers %}
@@ -10,6 +11,13 @@ server {{ server }}
 # NTP pools
 {% for pool in ntp_pools %}
 pool {{ pool }}
+{% endfor %}
+{% endif %}
+
+{% if ntp_nts_enabled and ntp_nts_servers | length > 0 %}
+# NTS-authenticated servers (POL-06 — cryptographic integrity of time source)
+{% for server in ntp_nts_servers %}
+server {{ server }}
 {% endfor %}
 {% endif %}
 
@@ -32,6 +40,11 @@ log tracking measurements statistics
 # Specify directory for Unix domain command socket
 keyfile /etc/chrony/chrony.keys
 leapsectz right/UTC
+
+{% if ntp_nts_enabled %}
+# NTS key material
+ntsdumpdir /var/lib/chrony
+{% endif %}
 
 {% if ntp_allow_networks | length > 0 %}
 # Allow NTP client access from specified networks

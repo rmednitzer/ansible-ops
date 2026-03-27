@@ -1,0 +1,14 @@
+---
+# Log forwarding role handlers
+
+- name: Restart rsyslog
+  ansible.builtin.systemd:
+    name: rsyslog
+    state: restarted
+  become: true
+
+- name: Restart auditd
+  ansible.builtin.systemd_service:
+    name: auditd
+    state: restarted
+  become: true

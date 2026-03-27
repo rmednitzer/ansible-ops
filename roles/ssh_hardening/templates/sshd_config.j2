@@ -53,9 +53,15 @@ ClientAliveCountMax {{ ssh_client_alive_count_max }}
 Banner {{ ssh_banner_path }}
 {% endif %}
 
+# Hardening
+UseDNS no
+PermitUserEnvironment no
+GatewayPorts no
+PermitTunnel no
+
 # Misc
 AcceptEnv LANG LC_*
-Subsystem sftp /usr/lib/openssh/sftp-server
+Subsystem sftp /usr/lib/openssh/sftp-server -f AUTH -l VERBOSE
 
 {% if ssh_allowed_users | length > 0 %}
 AllowUsers {{ ssh_allowed_users | join(' ') }}

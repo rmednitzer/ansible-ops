@@ -1,11 +1,23 @@
 ---
 # SSH hardening role defaults
+#
+# Compliance references:
+#   - NIS2 Art 21.2(i) — access control policies
+#   - NIS2 Art 21.2(j) — multi-factor authentication
+#   - GDPR Art 32 — security of processing
+#   - GDPR Art 25 — data protection by design
+#   - GDPR Art 5(2) — accountability (monitoring notice in banner)
+#   - POL-03 — access control policy (SSH key-only, password disabled)
+#   - POL-06 — cryptography policy (approved algorithms only)
+#   - CTL-0001 — federated IAM with MFA and auditable authorization
+#   - ISO 27001:2022 A.8.5 — secure authentication
 
 # SSH port
 ssh_port: 22
 
 # Authentication
-ssh_permit_root_login: "prohibit-password"
+# POL-03: least privilege — root login disabled by default
+ssh_permit_root_login: "no"
 ssh_password_authentication: false
 ssh_pubkey_authentication: true
 ssh_permit_empty_passwords: false
@@ -13,12 +25,14 @@ ssh_challenge_response_authentication: false
 
 # Security settings
 ssh_max_auth_tries: 3
-ssh_max_sessions: 5
-ssh_login_grace_time: 30
+ssh_max_sessions: 3
+ssh_login_grace_time: 20
 ssh_client_alive_interval: 300
 ssh_client_alive_count_max: 2
 
 # Protocol and ciphers (modern secure defaults)
+# POL-06: approved algorithms — no MD5, no SHA-1, AES-256 preferred
+# BSI TR-02102-4 compliant cipher selection
 ssh_kex_algorithms:
   - curve25519-sha256
   - curve25519-sha256@libssh.org
@@ -30,8 +44,6 @@ ssh_ciphers:
   - aes256-gcm@openssh.com
   - aes128-gcm@openssh.com
   - aes256-ctr
-  - aes192-ctr
-  - aes128-ctr
 
 ssh_macs:
   - hmac-sha2-512-etm@openssh.com
@@ -49,7 +61,8 @@ ssh_x11_forwarding: false
 ssh_allow_tcp_forwarding: false
 ssh_allow_agent_forwarding: false
 
-# Banner
+# Banner — GDPR Art 5(2) accountability, NIS2 Art 21.2(a)
+# Legal monitoring notice required for EU/Austrian compliance
 ssh_banner_enabled: true
 ssh_banner_path: "/etc/ssh/banner"
 

@@ -1,21 +1,34 @@
 ---
 # Site-wide common system management playbook
-# Applies base configuration, security hardening, and best practices to all Ubuntu hosts
+# Applies base configuration, security hardening, and compliance controls
+# to all Ubuntu hosts.
+#
+# Compliance alignment:
+#   - NIS2 Directive (EU 2022/2555) — Art 20, 21, 23
+#   - GDPR (EU 2016/679) — Art 5, 25, 32, 33
+#   - CRA (EU 2024/2847) — Annex I Part I, Part II
+#   - Austrian NISG 2026 (NIS2 transposition, effective 2026-10-01)
+#   - Austrian DSG (national GDPR supplement)
+#   - ISO 27001:2022 Annex A controls
+#   - platform-assurance controls: CTL-0001 through CTL-0010
 #
 # Usage:
 #   ansible-playbook -i inventories/<env>/hosts playbooks/site-common.yml
 #   ansible-playbook -i inventories/<env>/hosts playbooks/site-common.yml --tags ntp
 #   ansible-playbook -i inventories/<env>/hosts playbooks/site-common.yml --tags firewall
+#   ansible-playbook -i inventories/<env>/hosts playbooks/site-common.yml --tags compliance
 #   ansible-playbook -i inventories/<env>/hosts playbooks/site-common.yml --check --diff
 #
 # Role execution order:
-#   1. common      - Base packages, timezone, locale, sysctl, kernel/fs hardening
-#   2. users       - User accounts, sudo, password policy
-#   3. ntp         - Chrony time synchronization
-#   4. ssh_hardening - SSH server hardening
-#   5. ufw         - Firewall (after SSH to avoid lockout)
-#   6. fail2ban    - Intrusion prevention (after firewall)
-#   7. auditd      - Audit logging (last, to capture all changes)
+#   1. common          - Base packages, timezone, locale, sysctl, kernel/fs hardening
+#   2. users           - User accounts, sudo, password policy
+#   3. ntp             - Chrony time synchronization (before audit — timestamp integrity)
+#   4. ssh_hardening   - SSH server hardening
+#   5. ufw             - Firewall (after SSH to avoid lockout)
+#   6. fail2ban        - Intrusion prevention (after firewall)
+#   7. aide            - File integrity monitoring
+#   8. log_forwarding  - Centralised log collection
+#   9. auditd          - Audit logging (last, to capture all changes)
 
 - name: Apply common system management to all hosts
   hosts: all
@@ -36,24 +49,41 @@
     - role: common
       tags:
         - common
+        - compliance
     - role: users
       tags:
         - users
+        - compliance
     - role: ntp
       tags:
         - ntp
+        - compliance
     - role: ssh_hardening
       tags:
         - ssh
         - hardening
+        - compliance
     - role: ufw
       tags:
         - ufw
         - firewall
+        - compliance
     - role: fail2ban
       tags:
         - fail2ban
+        - compliance
+    - role: aide
+      tags:
+        - aide
+        - fim
+        - compliance
+    - role: log_forwarding
+      tags:
+        - log-forwarding
+        - logging
+        - compliance
     - role: auditd
       tags:
         - auditd
         - audit
+        - compliance

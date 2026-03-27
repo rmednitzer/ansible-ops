@@ -60,3 +60,10 @@
   tags:
     - common
     - services
+
+- name: Include compliance log retention tasks
+  ansible.builtin.import_tasks: logrotate_compliance.yml
+  tags:
+    - common
+    - log-retention
+    - compliance

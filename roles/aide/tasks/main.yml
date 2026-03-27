@@ -1,0 +1,84 @@
+---
+# AIDE file integrity monitoring role for Ubuntu 24.04 LTS
+# NIS2 Art 21.2(a), GDPR Art 32, POL-04, CTL-0004
+
+- name: Install AIDE
+  ansible.builtin.apt:
+    name: aide
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+  become: true
+  when: aide_enabled
+
+- name: Deploy AIDE configuration
+  ansible.builtin.template:
+    src: aide.conf.j2
+    dest: /etc/aide/aide.conf
+    owner: root
+    group: root
+    mode: "0600"
+    backup: true
+  become: true
+  when: aide_enabled
+
+- name: Ensure AIDE report directory exists
+  ansible.builtin.file:
+    path: "{{ aide_report_path | dirname }}"
+    state: directory
+    owner: root
+    group: adm
+    mode: "0750"
+  become: true
+  when: aide_enabled
+
+- name: Check if AIDE database exists
+  ansible.builtin.stat:
+    path: "{{ aide_db_path }}"
+  register: aide_db_stat
+  become: true
+
+- name: Initialize AIDE database
+  ansible.builtin.command:
+    cmd: aideinit -y -f
+  become: true
+  when:
+    - aide_enabled
+    - aide_init_db
+    - not aide_db_stat.stat.exists
+  changed_when: true
+
+- name: Deploy AIDE cron job
+  ansible.builtin.cron:
+    name: "AIDE integrity check"
+    minute: "{{ aide_cron_schedule.split(' ')[0] }}"
+    hour: "{{ aide_cron_schedule.split(' ')[1] }}"
+    day: "{{ aide_cron_schedule.split(' ')[2] }}"
+    month: "{{ aide_cron_schedule.split(' ')[3] }}"
+    weekday: "{{ aide_cron_schedule.split(' ')[4] }}"
+    user: root
+    job: "/usr/bin/aide --check --config /etc/aide/aide.conf > {{ aide_report_path }} 2>&1{% if aide_mailto %} && mail -s 'AIDE Report {{ ansible_hostname }}' {{ aide_mailto }} < {{ aide_report_path }}{% endif %}"
+  become: true
+  when:
+    - aide_enabled
+    - aide_cron_enabled
+
+- name: Deploy AIDE logrotate configuration
+  ansible.builtin.copy:
+    dest: /etc/logrotate.d/aide
+    content: |
+      # Ansible managed
+      {{ aide_report_path }} {
+          rotate 365
+          daily
+          compress
+          delaycompress
+          missingok
+          notifempty
+          create 0640 root adm
+      }
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+  when: aide_enabled

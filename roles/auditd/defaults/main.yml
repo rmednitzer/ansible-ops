@@ -1,29 +1,45 @@
 ---
 # Auditd role defaults
+#
+# Compliance references:
+#   - NIS2 Art 21.2(a) — policies on risk analysis and information system security
+#   - NIS2 Art 21.2(b) — incident handling (forensic evidence)
+#   - GDPR Art 5(2) — accountability (audit trail as compliance evidence)
+#   - GDPR Art 32 — security of processing (logging as security measure)
+#   - POL-09 — data classification: full audit for Restricted data operations
+#   - CTL-0004 — immutable evidence store with retention controls
+#   - CTL-0006 — logging legality, minimisation, and forensic correlation
+#   - ISO 27001:2022 A.8.15 — logging
+#   - ISO 27001:2022 A.8.17 — clock synchronisation (chrony dependency)
 
-# Buffer and backlog settings
-auditd_buffer_size: 8192
-auditd_backlog_limit: 8192
+# Buffer and backlog settings (increased for compliance workloads)
+auditd_buffer_size: 16384
+auditd_backlog_limit: 16384
 
-# Log settings
-auditd_max_log_file: 50
+# Log settings — sized for compliance retention
+# CTL-0004 requires governance logs retained 10 years
+auditd_max_log_file: 100
 auditd_max_log_file_action: rotate
-auditd_num_logs: 10
+auditd_num_logs: 20
 auditd_log_format: ENRICHED
 
 # Failure mode: 0=silent, 1=printk, 2=panic
+# NIS2 requires audit continuity; mode 1 logs failures without halting
 auditd_failure_mode: 1
 
-# Space left action
-auditd_space_left: 75
+# Space left action — alert before disk fills
+auditd_space_left: 150
 auditd_space_left_action: SYSLOG
-auditd_admin_space_left: 50
+auditd_admin_space_left: 75
 auditd_admin_space_left_action: SUSPEND
 auditd_disk_full_action: SUSPEND
 auditd_disk_error_action: SUSPEND
 
 # Enable CIS Benchmark-aligned audit rules
 auditd_cis_rules: true
+
+# Enable NIS2/GDPR extended audit rules (data access, crypto operations, mounts)
+auditd_compliance_rules: true
 
 # Additional custom audit rules (raw auditctl format)
 auditd_custom_rules: []

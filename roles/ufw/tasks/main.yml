@@ -9,6 +9,13 @@
     cache_valid_time: 3600
   become: true
 
+- name: Configure UFW IPv6 support
+  ansible.builtin.lineinfile:
+    path: /etc/default/ufw
+    regexp: "^IPV6="
+    line: "IPV6={{ ufw_ipv6 | ternary('yes', 'no') }}"
+  become: true
+
 - name: Reset UFW to defaults
   community.general.ufw:
     state: reset
