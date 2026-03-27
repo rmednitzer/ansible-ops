@@ -57,7 +57,11 @@
     month: "{{ aide_cron_schedule.split(' ')[3] }}"
     weekday: "{{ aide_cron_schedule.split(' ')[4] }}"
     user: root
-    job: "/usr/bin/aide --check --config /etc/aide/aide.conf > {{ aide_report_path }} 2>&1{% if aide_mailto %} && mail -s 'AIDE Report {{ ansible_hostname }}' {{ aide_mailto }} < {{ aide_report_path }}{% endif %}"
+    job: >-
+      /usr/bin/aide --check --config /etc/aide/aide.conf
+      > {{ aide_report_path }} 2>&1{% if aide_mailto %}
+      && mail -s 'AIDE Report {{ ansible_hostname }}'
+      {{ aide_mailto }} < {{ aide_report_path }}{% endif %}
   become: true
   when:
     - aide_enabled
