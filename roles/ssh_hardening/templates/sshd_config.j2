@@ -1,0 +1,65 @@
+# Ansible managed - do not edit manually
+# SSH server configuration - hardened for Ubuntu 24.04 LTS
+
+Port {{ ssh_port }}
+AddressFamily any
+ListenAddress 0.0.0.0
+ListenAddress ::
+
+# Host keys
+HostKey /etc/ssh/ssh_host_ed25519_key
+HostKey /etc/ssh/ssh_host_rsa_key
+
+# Ciphers and algorithms
+KexAlgorithms {{ ssh_kex_algorithms | join(',') }}
+Ciphers {{ ssh_ciphers | join(',') }}
+MACs {{ ssh_macs | join(',') }}
+HostKeyAlgorithms {{ ssh_host_key_algorithms | join(',') }}
+
+# Logging
+SyslogFacility AUTH
+LogLevel VERBOSE
+
+# Authentication
+LoginGraceTime {{ ssh_login_grace_time }}
+PermitRootLogin {{ ssh_permit_root_login }}
+StrictModes yes
+MaxAuthTries {{ ssh_max_auth_tries }}
+MaxSessions {{ ssh_max_sessions }}
+
+PubkeyAuthentication {{ ssh_pubkey_authentication | ternary('yes', 'no') }}
+AuthorizedKeysFile .ssh/authorized_keys
+
+PasswordAuthentication {{ ssh_password_authentication | ternary('yes', 'no') }}
+PermitEmptyPasswords {{ ssh_permit_empty_passwords | ternary('yes', 'no') }}
+KbdInteractiveAuthentication {{ ssh_challenge_response_authentication | ternary('yes', 'no') }}
+
+# PAM
+UsePAM yes
+
+# Forwarding
+AllowAgentForwarding {{ ssh_allow_agent_forwarding | ternary('yes', 'no') }}
+AllowTcpForwarding {{ ssh_allow_tcp_forwarding | ternary('yes', 'no') }}
+X11Forwarding {{ ssh_x11_forwarding | ternary('yes', 'no') }}
+
+# Session
+PrintMotd no
+PrintLastLog yes
+TCPKeepAlive yes
+ClientAliveInterval {{ ssh_client_alive_interval }}
+ClientAliveCountMax {{ ssh_client_alive_count_max }}
+
+{% if ssh_banner_enabled %}
+Banner {{ ssh_banner_path }}
+{% endif %}
+
+# Misc
+AcceptEnv LANG LC_*
+Subsystem sftp /usr/lib/openssh/sftp-server
+
+{% if ssh_allowed_users | length > 0 %}
+AllowUsers {{ ssh_allowed_users | join(' ') }}
+{% endif %}
+{% if ssh_allowed_groups | length > 0 %}
+AllowGroups {{ ssh_allowed_groups | join(' ') }}
+{% endif %}

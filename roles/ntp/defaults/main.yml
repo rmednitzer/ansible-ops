@@ -1,0 +1,28 @@
+---
+# NTP role defaults (chrony)
+
+# NTP servers to use
+ntp_servers:
+  - "0.ubuntu.pool.ntp.org iburst"
+  - "1.ubuntu.pool.ntp.org iburst"
+  - "2.ubuntu.pool.ntp.org iburst"
+  - "3.ubuntu.pool.ntp.org iburst"
+
+# NTP pools (alternative to individual servers)
+ntp_pools: []
+
+# Allow NTP clients from these networks (empty = no clients served)
+ntp_allow_networks: []
+
+# Chrony drift file location
+ntp_driftfile: "/var/lib/chrony/chrony.drift"
+
+# Log directory
+ntp_logdir: "/var/log/chrony"
+
+# Enable RTC sync
+ntp_rtcsync: true
+
+# Step the clock if offset is larger than this (seconds) on first 3 updates
+ntp_makestep_threshold: 1.0
+ntp_makestep_limit: 3

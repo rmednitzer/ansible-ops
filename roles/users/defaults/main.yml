@@ -1,0 +1,35 @@
+---
+# Users role defaults
+
+# Deploy users from this list
+# Each item: name, groups, shell, ssh_keys, state
+users_managed: []
+#  - name: deploy
+#    groups:
+#      - sudo
+#    shell: /bin/bash
+#    ssh_keys:
+#      - "ssh-ed25519 AAAA... deploy@example.com"
+#    state: present
+
+# Sudo configuration
+users_sudo_group: "sudo"
+users_sudo_passwordless: false
+users_sudo_require_tty: true
+
+# Password policy (PAM / login.defs)
+users_password_max_days: 90
+users_password_min_days: 7
+users_password_warn_days: 14
+users_password_min_length: 12
+users_password_remember: 5
+
+# Login restrictions
+users_login_timeout: 60
+users_umask: "027"
+
+# Disable unused system accounts
+users_disable_system_accounts: true
+
+# Lock root account (disable direct root login)
+users_lock_root: false

@@ -1,0 +1,26 @@
+---
+# Users role for Ubuntu 24.04 LTS
+
+- name: Include password policy tasks
+  ansible.builtin.import_tasks: password_policy.yml
+  tags:
+    - users
+    - password-policy
+
+- name: Include sudo tasks
+  ansible.builtin.import_tasks: sudo.yml
+  tags:
+    - users
+    - sudo
+
+- name: Include user management tasks
+  ansible.builtin.import_tasks: manage_users.yml
+  tags:
+    - users
+    - manage-users
+
+- name: Include account hardening tasks
+  ansible.builtin.import_tasks: harden.yml
+  tags:
+    - users
+    - harden

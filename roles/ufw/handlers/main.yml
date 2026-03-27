@@ -1,0 +1,7 @@
+---
+# UFW role handlers
+
+- name: Reload ufw
+  community.general.ufw:
+    state: reloaded
+  become: true

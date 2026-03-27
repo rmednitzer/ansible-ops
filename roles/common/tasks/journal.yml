@@ -1,0 +1,10 @@
+---
+# Systemd journal configuration
+
+- name: Configure systemd journal max size
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/journald.conf
+    regexp: "^#?SystemMaxUse="
+    line: "SystemMaxUse={{ common_journal_max_size }}"
+  become: true
+  notify: Restart journald

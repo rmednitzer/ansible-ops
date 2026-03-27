@@ -1,0 +1,8 @@
+---
+# Timezone configuration tasks
+
+- name: Set timezone
+  community.general.timezone:
+    name: "{{ common_timezone }}"
+  become: true
+  notify: Restart cron

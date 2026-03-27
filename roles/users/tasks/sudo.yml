@@ -1,0 +1,18 @@
+---
+# Sudo configuration tasks
+
+- name: Ensure sudo is installed
+  ansible.builtin.apt:
+    name: sudo
+    state: present
+  become: true
+
+- name: Deploy sudoers hardening config
+  ansible.builtin.template:
+    src: sudoers-hardening.j2
+    dest: /etc/sudoers.d/99-ansible-hardening
+    owner: root
+    group: root
+    mode: "0440"
+    validate: "visudo -cf %s"
+  become: true

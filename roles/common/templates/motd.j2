@@ -1,0 +1,13 @@
+#!/bin/bash
+# Ansible managed - do not edit manually
+echo ""
+echo "  Hostname : $(hostname -f)"
+echo "  OS       : $(lsb_release -ds 2>/dev/null || cat /etc/os-release | grep PRETTY_NAME | cut -d= -f2 | tr -d '\"')"
+echo "  Kernel   : $(uname -r)"
+echo "  Uptime   : $(uptime -p)"
+echo "  CPU Load : $(cat /proc/loadavg | awk '{print $1, $2, $3}')"
+echo "  Memory   : $(free -h | awk '/^Mem:/{print $3 "/" $2}')"
+echo "  Disk /   : $(df -h / | awk 'NR==2{print $3 "/" $2 " (" $5 " used)"}')"
+echo ""
+echo "  Managed by Ansible"
+echo ""

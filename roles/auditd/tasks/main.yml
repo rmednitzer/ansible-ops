@@ -1,0 +1,40 @@
+---
+# Auditd role for Ubuntu 24.04 LTS
+
+- name: Install auditd and audispd-plugins
+  ansible.builtin.apt:
+    name:
+      - auditd
+      - audispd-plugins
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+  become: true
+
+- name: Deploy auditd configuration
+  ansible.builtin.template:
+    src: auditd.conf.j2
+    dest: /etc/audit/auditd.conf
+    owner: root
+    group: root
+    mode: "0640"
+    backup: true
+  become: true
+  notify: Restart auditd
+
+- name: Deploy audit rules
+  ansible.builtin.template:
+    src: audit.rules.j2
+    dest: /etc/audit/rules.d/99-ansible.rules
+    owner: root
+    group: root
+    mode: "0640"
+  become: true
+  notify: Restart auditd
+
+- name: Enable and start auditd
+  ansible.builtin.systemd:
+    name: auditd
+    state: started
+    enabled: true
+  become: true
