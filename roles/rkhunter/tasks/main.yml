@@ -50,7 +50,13 @@
     month: "{{ rkhunter_cron_schedule.split(' ')[3] }}"
     weekday: "{{ rkhunter_cron_schedule.split(' ')[4] }}"
     user: root
-    job: "/usr/bin/rkhunter --check --skip-keypress --quiet --logfile {{ rkhunter_report_path }}{% if rkhunter_mailto %} && if grep -q 'Warning' {{ rkhunter_report_path }}; then mail -s 'rkhunter Warning {{ ansible_hostname }}' {{ rkhunter_mailto }} < {{ rkhunter_report_path }}; fi{% endif %}"
+    job: >-
+      /usr/bin/rkhunter --check --skip-keypress --quiet
+      --logfile {{ rkhunter_report_path }}{% if rkhunter_mailto %}
+      && if grep -q 'Warning' {{ rkhunter_report_path }};
+      then mail -s 'rkhunter Warning {{ ansible_hostname }}'
+      {{ rkhunter_mailto }} < {{ rkhunter_report_path }};
+      fi{% endif %}
   become: true
   when:
     - rkhunter_enabled

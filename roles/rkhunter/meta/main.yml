@@ -1,2 +1,18 @@
 ---
-# rkhunter role metadata
+galaxy_info:
+  role_name: rkhunter
+  author: ansible-ops
+  description: Rootkit detection via rkhunter for Ubuntu 24.04 LTS
+  license: GPL-3.0-or-later
+  min_ansible_version: "2.15"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - noble
+  galaxy_tags:
+    - rkhunter
+    - security
+    - rootkit
+    - ubuntu
+
+dependencies: []
