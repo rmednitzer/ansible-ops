@@ -50,16 +50,16 @@ ansible-playbook -i inventories/<env>/hosts playbooks/site-common.yml --tags ssh
 
 | Role | Purpose | Key Compliance References |
 |------|---------|---------------------------|
-| `common` | Base packages, timezone, sysctl, kernel/FS hardening, log retention | NIS2 Art 21.2(a)(e), GDPR Art 25/32, CRA Annex I |
-| `users` | User accounts, sudo, password policy, account lockout | NIS2 Art 21.2(i), GDPR Art 32, POL-01 |
-| `ntp` | Chrony time synchronisation (Austrian/EU NTP pools, NTS) | CTL-0003, ISO 27001 A.8.17 |
-| `ssh_hardening` | SSH server hardening, legal banner, approved ciphers | POL-01, POL-03, NIS2 Art 21.2(h)(i) |
-| `ufw` | UFW firewall with default-deny, IPv6, rate limiting | NIS2 Art 21.2(e), GDPR Art 32 |
-| `fail2ban` | Intrusion prevention with recidive jail | NIS2 Art 21.2(b), POL-02 |
-| `aide` | File integrity monitoring (AIDE) | NIS2 Art 21.2(a), GDPR Art 32, CTL-0002 |
-| `rkhunter` | Rootkit detection (hidden processes, kernel modules, signatures) | NIS2 Art 21.2(a)(b), GDPR Art 32, ISO 27001 A.8.7 |
-| `log_forwarding` | Centralised log forwarding via rsyslog (TLS) | CTL-0003, NIS2 Art 21.2(a), GDPR Art 5(2) |
-| `auditd` | System audit logging (CIS + NIS2/GDPR rules) | CTL-0003, GDPR Art 5(2), NIS2 Art 21.2(a) |
+| `common` | Base packages, timezone, sysctl, kernel/FS hardening, log retention | CTL-0002, CTL-0003, POL-04, NIS2 Art 21.2(a)(e), GDPR Art 25/32, CRA Annex I |
+| `users` | User accounts, sudo, password policy, account lockout | CTL-0001, POL-01, POL-03, NIS2 Art 21.2(i), GDPR Art 32 |
+| `ntp` | Chrony time synchronisation (Austrian/EU NTP pools, NTS) | CTL-0003, POL-02, POL-03, ISO 27001 A.8.17 |
+| `ssh_hardening` | SSH server hardening, legal banner, approved ciphers | CTL-0001, POL-01, POL-03, NIS2 Art 21.2(h)(i) |
+| `ufw` | UFW firewall with default-deny, IPv6, rate limiting | POL-01, NIS2 Art 21.2(e), GDPR Art 32 |
+| `fail2ban` | Intrusion prevention with recidive jail | POL-02, NIS2 Art 21.2(b) |
+| `aide` | File integrity monitoring (AIDE) | CTL-0002, POL-02, POL-03, NIS2 Art 21.2(a), GDPR Art 32 |
+| `rkhunter` | Rootkit detection (hidden processes, kernel modules, signatures) | POL-02, NIS2 Art 21.2(a)(b), GDPR Art 32, ISO 27001 A.8.7 |
+| `log_forwarding` | Centralised log forwarding via rsyslog (TLS) | CTL-0002, CTL-0003, POL-02, POL-03, NIS2 Art 21.2(a), GDPR Art 5(2) |
+| `auditd` | System audit logging (CIS + NIS2/GDPR rules) | CTL-0002, CTL-0003, POL-04, POL-05, GDPR Art 5(2), NIS2 Art 21.2(a) |
 
 ## Repository Structure
 
