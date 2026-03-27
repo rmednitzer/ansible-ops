@@ -33,7 +33,7 @@ controls:
       - ssh_hardening
       - users
 
-  CTL-0004:
+  CTL-0002:
     title: "Immutable evidence store with retention controls"
     description: >
       Compliance evidence (audit logs, integrity reports, incident records)
@@ -57,7 +57,7 @@ controls:
       - log_forwarding
       - common
 
-  CTL-0006:
+  CTL-0003:
     title: "Logging legality, minimisation, and forensic correlation"
     description: >
       All system logging must comply with data minimisation principles,
@@ -81,7 +81,7 @@ controls:
 # ---------------------------------------------------------------------------
 
 policies:
-  POL-03:
+  POL-01:
     title: "Access control policy"
     description: >
       Enforces least-privilege access, default-deny posture, key-only
@@ -98,7 +98,7 @@ policies:
       - users
       - ufw
 
-  POL-04:
+  POL-02:
     title: "Incident response policy"
     description: >
       Defines detection, containment, eradication, and recovery phases
@@ -117,7 +117,7 @@ policies:
       - ntp
       - log_forwarding
 
-  POL-06:
+  POL-03:
     title: "Cryptography policy"
     description: >
       Mandates approved cryptographic algorithms and key management
@@ -136,7 +136,7 @@ policies:
       - log_forwarding
       - aide
 
-  POL-09:
+  POL-04:
     title: "Data classification and handling policy"
     description: >
       Establishes data classification levels (Public, Internal,
@@ -152,7 +152,7 @@ policies:
       - common
       - auditd
 
-  POL-10:
+  POL-05:
     title: "Change management policy"
     description: >
       Requires all infrastructure changes to be tracked, authorised,

@@ -9,10 +9,10 @@
 #   - GDPR Art 5(1)(c) — data minimisation (IPv6 privacy extensions)
 #   - CRA Annex I Part I — secure-by-default, minimal attack surface
 #   - ISO 27001:2022 A.8.9 — configuration management
-#   - CTL-0006 — logging legality, minimisation, and forensic correlation
-#   - POL-09 — data classification and handling policy
+#   - CTL-0003 — logging legality, minimisation, and forensic correlation
+#   - POL-04 — data classification and handling policy
 
-# Timezone (UTC for consistent log correlation per CTL-0006)
+# Timezone (UTC for consistent log correlation per CTL-0003)
 common_timezone: "UTC"
 
 # Locale
@@ -101,7 +101,7 @@ common_sysctl_settings:
   fs.protected_symlinks: 1
 
 # Systemd journal max size
-# CTL-0006 — retention per log category
+# CTL-0003 — retention per log category
 common_journal_max_size: "500M"
 common_journal_max_retention: "6month"
 
@@ -127,7 +127,7 @@ common_kernel_modules_blacklist:
 common_harden_tmp: true
 
 # Disable core dumps
-# POL-09 — Restricted data must not leak via core dumps
+# POL-04 — Restricted data must not leak via core dumps
 common_disable_core_dumps: true
 
 # Services to disable (common bloat on Ubuntu)
@@ -136,8 +136,8 @@ common_services_disable:
   - whoopsie
 
 # Log retention categories (see docs/compliance-controls.yml)
-# CTL-0004 — immutable evidence store with retention controls
-# CTL-0006 — logging legality, minimisation, and forensic correlation
+# CTL-0002 — immutable evidence store with retention controls
+# CTL-0003 — logging legality, minimisation, and forensic correlation
 common_log_retention:
   # Governance logs (board minutes, policy approvals, access reviews): 10 years
   governance: "3650"

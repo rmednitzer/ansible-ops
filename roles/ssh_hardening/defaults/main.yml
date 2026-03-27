@@ -7,8 +7,8 @@
 #   - GDPR Art 32 — security of processing
 #   - GDPR Art 25 — data protection by design
 #   - GDPR Art 5(2) — accountability (monitoring notice in banner)
-#   - POL-03 — access control policy (SSH key-only, password disabled)
-#   - POL-06 — cryptography policy (approved algorithms only)
+#   - POL-01 — access control policy (SSH key-only, password disabled)
+#   - POL-03 — cryptography policy (approved algorithms only)
 #   - CTL-0001 — federated IAM with MFA and auditable authorization
 #   - ISO 27001:2022 A.8.5 — secure authentication
 
@@ -16,7 +16,7 @@
 ssh_port: 22
 
 # Authentication
-# POL-03: least privilege — root login disabled by default
+# POL-01: least privilege — root login disabled by default
 ssh_permit_root_login: "no"
 ssh_password_authentication: false
 ssh_pubkey_authentication: true
@@ -31,7 +31,7 @@ ssh_client_alive_interval: 300
 ssh_client_alive_count_max: 2
 
 # Protocol and ciphers (modern secure defaults)
-# POL-06: approved algorithms — no MD5, no SHA-1, AES-256 preferred
+# POL-03: approved algorithms — no MD5, no SHA-1, AES-256 preferred
 # BSI TR-02102-4 compliant cipher selection
 ssh_kex_algorithms:
   - curve25519-sha256

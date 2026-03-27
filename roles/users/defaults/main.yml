@@ -6,7 +6,7 @@
 #   - NIS2 Art 21.2(j) — multi-factor authentication
 #   - GDPR Art 32 — security of processing
 #   - GDPR Art 25 — data protection by design and by default
-#   - POL-03 — access control policy (least privilege, default deny)
+#   - POL-01 — access control policy (least privilege, default deny)
 #   - CTL-0001 — federated IAM with MFA and auditable authorization
 #   - ISO 27001:2022 A.5.15 — access control
 #   - ISO 27001:2022 A.8.2 — privileged access rights
@@ -39,7 +39,7 @@ users_password_remember: 12
 users_password_min_class: 4
 
 # Encryption method for stored passwords
-# POL-06 — cryptography policy: no MD5, no SHA-1
+# POL-03 — cryptography policy: no MD5, no SHA-1
 users_password_encrypt_method: "YESCRYPT"
 
 # Login restrictions
@@ -50,5 +50,5 @@ users_umask: "027"
 users_disable_system_accounts: true
 
 # Lock root account (disable direct root login)
-# POL-03 — least privilege: JIT access via sudo
+# POL-01 — least privilege: JIT access via sudo
 users_lock_root: true
