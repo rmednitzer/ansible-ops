@@ -1,13 +1,24 @@
 ---
 # UFW firewall role defaults
+#
+# Compliance references:
+#   - NIS2 Art 21.2(e) — network and information systems security
+#   - GDPR Art 32 — security of processing
+#   - POL-03 — access control policy (default deny)
+#   - CRA Annex I Part I — protection of attack surface; secure interfaces
+#   - ISO 27001:2022 A.8.20 — network security
+#   - ISO 27001:2022 A.8.21 — security of network services
 
-# Default policies
+# Default policies — POL-03: default deny
 ufw_default_incoming: "deny"
 ufw_default_outgoing: "allow"
 ufw_default_forward: "deny"
 
-# Enable logging
+# Enable logging (NIS2 Art 21.2(a) — security event logging)
 ufw_logging: "on"
+
+# Enable IPv6 support
+ufw_ipv6: true
 
 # Rules to allow
 # Each item should have: rule, port, proto, and optionally src, comment

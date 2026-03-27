@@ -1,0 +1,36 @@
+# Ansible managed - do not edit manually
+# rsyslog forwarding configuration
+# Compliance: CTL-0006, NIS2 Art 21.2(a), GDPR Art 5(2)
+
+# Rate limiting — GDPR Art 5(1)(c) data minimisation
+$SystemLogRateLimitInterval {{ log_forwarding_rate_limit_interval }}
+$SystemLogRateLimitBurst {{ log_forwarding_rate_limit_burst }}
+
+{% if log_forwarding_tls_enabled %}
+# TLS configuration — POL-06 cryptography policy
+$DefaultNetstreamDriverCAFile {{ log_forwarding_tls_ca_cert }}
+{% if log_forwarding_tls_cert %}
+$DefaultNetstreamDriverCertFile {{ log_forwarding_tls_cert }}
+$DefaultNetstreamDriverKeyFile {{ log_forwarding_tls_key }}
+{% endif %}
+$DefaultNetstreamDriver gtls
+$ActionSendStreamDriverMode 1
+$ActionSendStreamDriverAuthMode x509/name
+{% endif %}
+
+# Queue configuration for reliable delivery
+$ActionQueueType {{ log_forwarding_queue_type }}
+$ActionQueueMaxDiskSpace 1g
+$ActionQueueSaveOnShutdown on
+$ActionQueueFileName fwdRule1
+$ActionResumeRetryCount -1
+$ActionResumeInterval 30
+
+# Forward all logs to centralised server
+{% if log_forwarding_protocol == "tcp" %}
+*.* @@{{ log_forwarding_server }}:{{ log_forwarding_port }}
+{% elif log_forwarding_protocol == "relp" %}
+*.* :omrelp:{{ log_forwarding_server }}:{{ log_forwarding_port }}
+{% else %}
+*.* @{{ log_forwarding_server }}:{{ log_forwarding_port }}
+{% endif %}

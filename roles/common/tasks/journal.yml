@@ -1,10 +1,36 @@
 ---
 # Systemd journal configuration
+# CTL-0006 — logging legality, minimisation, and forensic correlation
+# GDPR Art 5(1)(e) — storage limitation
 
 - name: Configure systemd journal max size
   ansible.builtin.lineinfile:
     path: /etc/systemd/journald.conf
     regexp: "^#?SystemMaxUse="
     line: "SystemMaxUse={{ common_journal_max_size }}"
+  become: true
+  notify: Restart journald
+
+- name: Configure systemd journal max retention
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/journald.conf
+    regexp: "^#?MaxRetentionSec="
+    line: "MaxRetentionSec={{ common_journal_max_retention }}"
+  become: true
+  notify: Restart journald
+
+- name: Ensure journal storage is persistent
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/journald.conf
+    regexp: "^#?Storage="
+    line: "Storage=persistent"
+  become: true
+  notify: Restart journald
+
+- name: Ensure journal forward to syslog for centralized collection
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/journald.conf
+    regexp: "^#?ForwardToSyslog="
+    line: "ForwardToSyslog=yes"
   become: true
   notify: Restart journald

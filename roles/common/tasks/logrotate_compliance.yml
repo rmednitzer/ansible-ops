@@ -1,0 +1,73 @@
+---
+# Log retention configuration aligned with platform-assurance evidence tiers
+# CTL-0004 — immutable evidence store with retention controls
+# CTL-0006 — logging legality, minimisation, and forensic correlation
+# GDPR Art 5(1)(e) — storage limitation
+# GDPR Art 5(2) — accountability (retain audit evidence)
+# NIS2 Art 21.2(a) — information system security policies
+
+- name: Deploy compliance-aligned logrotate for auth logs
+  ansible.builtin.copy:
+    dest: /etc/logrotate.d/compliance-auth
+    content: |
+      # Ansible managed — compliance log retention
+      # Legal basis: NIS2 Art 21.2(a), GDPR Art 5(2), Art 32
+      # Retention tier: security_audit ({{ common_log_retention.security_audit }} days)
+      /var/log/auth.log {
+          rotate {{ (common_log_retention.security_audit | int / 7) | int }}
+          weekly
+          compress
+          delaycompress
+          missingok
+          notifempty
+          create 0640 syslog adm
+      }
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+
+- name: Deploy compliance-aligned logrotate for sudo logs
+  ansible.builtin.copy:
+    dest: /etc/logrotate.d/compliance-sudo
+    content: |
+      # Ansible managed — compliance log retention
+      # Legal basis: NIS2 Art 21.2(i), GDPR Art 5(2)
+      # Retention tier: security_audit ({{ common_log_retention.security_audit }} days)
+      /var/log/sudo.log {
+          rotate {{ (common_log_retention.security_audit | int / 7) | int }}
+          weekly
+          compress
+          delaycompress
+          missingok
+          notifempty
+          create 0640 root adm
+      }
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+
+- name: Deploy compliance-aligned logrotate for syslog
+  ansible.builtin.copy:
+    dest: /etc/logrotate.d/compliance-syslog
+    content: |
+      # Ansible managed — compliance log retention
+      # Legal basis: NIS2 Art 21.2(a), GDPR Art 6(1)(f) legitimate interest
+      # Retention tier: operational ({{ common_log_retention.operational }} days)
+      /var/log/syslog {
+          rotate {{ (common_log_retention.operational | int / 7) | int }}
+          weekly
+          compress
+          delaycompress
+          missingok
+          notifempty
+          create 0640 syslog adm
+          postrotate
+              /usr/lib/rsyslog/rsyslog-rotate
+          endscript
+      }
+    owner: root
+    group: root
+    mode: "0644"
+  become: true

@@ -1,0 +1,48 @@
+# Ansible managed - do not edit manually
+# rkhunter configuration for Ubuntu 24.04 LTS
+# Compliance: NIS2 Art 21.2(a)(b), GDPR Art 32, ISO 27001 A.8.7
+
+LOGFILE={{ rkhunter_report_path }}
+APPEND_LOG=1
+
+UPDATE_MIRRORS={{ rkhunter_update_mirrors }}
+MIRRORS_MODE={{ rkhunter_mirrors_mode }}
+WEB_CMD="{{ rkhunter_web_cmd }}"
+
+MAIL-ON-WARNING="{{ rkhunter_mailto }}"
+
+ENABLE_TESTS="{{ rkhunter_enable_tests }}"
+DISABLE_TESTS="{{ rkhunter_disable_tests }}"
+
+# Use package manager to verify file properties
+PKGMGR=DPKG
+HASH_CMD=SHA256
+
+{% if rkhunter_allow_script_whitelisting %}
+{% for script in rkhunter_scriptwhitelist %}
+SCRIPTWHITELIST={{ script }}
+{% endfor %}
+{% endif %}
+
+{% for dir in rkhunter_allowhiddendir %}
+ALLOWHIDDENDIR={{ dir }}
+{% endfor %}
+
+{% for file in rkhunter_allowhiddenfile %}
+ALLOWHIDDENFILE={{ file }}
+{% endfor %}
+
+# Syslog integration for centralised log forwarding
+USE_SYSLOG=authpriv.warning
+
+# Allow SSH root login setting (matches ssh_hardening role)
+ALLOW_SSH_ROOT_USER=no
+
+# Allow SSH protocol v2 only
+ALLOW_SSH_PROT_V1=0
+
+# Inode checks
+SCANROOTKITMODE=THOROUGH
+
+# Warn if OS information has changed
+OS_VERSION_FILE=/etc/os-release

@@ -1,6 +1,11 @@
 ---
 # Global variables applied to all hosts
 # Override per-environment in inventories/<env>/group_vars/
+#
+# Compliance alignment:
+#   NIS2 (EU 2022/2555), GDPR (EU 2016/679), CRA (EU 2024/2847)
+#   Austrian NISG 2026, DSG
+#   platform-assurance: CTL-0001 through CTL-0010, POL-01 through POL-10
 
 # --- Common role ---
 common_timezone: "UTC"
@@ -11,12 +16,17 @@ common_disable_core_dumps: true
 common_harden_tmp: true
 
 # --- NTP role ---
-# ntp_servers:  # Uncomment to override default Ubuntu pool servers
-#   - "ntp1.example.com iburst"
-#   - "ntp2.example.com iburst"
+# Austrian/European NTP pools for jurisdictional alignment
+# Override for non-Austrian deployments
+# ntp_servers:
+#   - "0.at.pool.ntp.org iburst"
+#   - "1.at.pool.ntp.org iburst"
+#   - "2.at.pool.ntp.org iburst"
+#   - "0.europe.pool.ntp.org iburst"
 
 # --- SSH hardening role ---
-ssh_permit_root_login: "prohibit-password"
+# POL-03: root login disabled; key-only authentication
+ssh_permit_root_login: "no"
 ssh_password_authentication: false
 
 # --- UFW firewall role ---
@@ -34,6 +44,10 @@ ssh_password_authentication: false
 # fail2ban_ignoreip: "127.0.0.1/8 ::1 10.0.0.0/8"  # Add trusted networks
 
 # --- Users role ---
+# POL-03: least privilege; lock root by default
+users_lock_root: true
+users_password_min_length: 14
+users_password_remember: 12
 # users_managed:
 #   - name: deploy
 #     groups:
@@ -45,3 +59,18 @@ ssh_password_authentication: false
 
 # --- Auditd role ---
 auditd_cis_rules: true
+auditd_compliance_rules: true
+
+# --- AIDE role ---
+aide_enabled: true
+# aide_mailto: "security@example.com"
+
+# --- rkhunter role ---
+rkhunter_enabled: true
+# rkhunter_mailto: "security@example.com"
+
+# --- Log forwarding role ---
+# Set log_forwarding_server to your SIEM/log aggregator endpoint
+# log_forwarding_server: "siem.example.com"
+# log_forwarding_port: 514
+# log_forwarding_tls_enabled: true

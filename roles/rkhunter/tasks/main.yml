@@ -1,0 +1,91 @@
+---
+# rkhunter role for Ubuntu 24.04 LTS
+# NIS2 Art 21.2(a)(b), GDPR Art 32, ISO 27001 A.8.7
+
+- name: Install rkhunter
+  ansible.builtin.apt:
+    name: rkhunter
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+  become: true
+  when: rkhunter_enabled
+
+- name: Deploy rkhunter configuration
+  ansible.builtin.template:
+    src: rkhunter.conf.j2
+    dest: /etc/rkhunter.conf
+    owner: root
+    group: root
+    mode: "0600"
+    backup: true
+  become: true
+  when: rkhunter_enabled
+
+- name: Ensure rkhunter report directory exists
+  ansible.builtin.file:
+    path: "{{ rkhunter_report_path | dirname }}"
+    state: directory
+    owner: root
+    group: adm
+    mode: "0750"
+  become: true
+  when: rkhunter_enabled
+
+- name: Update rkhunter file properties database
+  ansible.builtin.command:
+    cmd: rkhunter --propupd
+  become: true
+  when:
+    - rkhunter_enabled
+    - rkhunter_update_db
+  changed_when: true
+
+- name: Deploy rkhunter cron job
+  ansible.builtin.cron:
+    name: "rkhunter daily scan"
+    minute: "{{ rkhunter_cron_schedule.split(' ')[0] }}"
+    hour: "{{ rkhunter_cron_schedule.split(' ')[1] }}"
+    day: "{{ rkhunter_cron_schedule.split(' ')[2] }}"
+    month: "{{ rkhunter_cron_schedule.split(' ')[3] }}"
+    weekday: "{{ rkhunter_cron_schedule.split(' ')[4] }}"
+    user: root
+    job: "/usr/bin/rkhunter --check --skip-keypress --quiet --logfile {{ rkhunter_report_path }}{% if rkhunter_mailto %} && if grep -q 'Warning' {{ rkhunter_report_path }}; then mail -s 'rkhunter Warning {{ ansible_hostname }}' {{ rkhunter_mailto }} < {{ rkhunter_report_path }}; fi{% endif %}"
+  become: true
+  when:
+    - rkhunter_enabled
+    - rkhunter_cron_enabled
+
+- name: Deploy APT hook for rkhunter database update after upgrades
+  ansible.builtin.copy:
+    dest: /etc/apt/apt.conf.d/90rkhunter
+    content: |
+      // Ansible managed — update rkhunter DB after package operations
+      DPkg::Post-Invoke { "if [ -x /usr/bin/rkhunter ]; then /usr/bin/rkhunter --propupd; fi"; };
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+  when:
+    - rkhunter_enabled
+    - rkhunter_apt_hook
+
+- name: Deploy rkhunter logrotate configuration
+  ansible.builtin.copy:
+    dest: /etc/logrotate.d/rkhunter
+    content: |
+      # Ansible managed
+      {{ rkhunter_report_path }} {
+          rotate 52
+          weekly
+          compress
+          delaycompress
+          missingok
+          notifempty
+          create 0640 root adm
+      }
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+  when: rkhunter_enabled

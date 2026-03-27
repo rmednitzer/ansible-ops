@@ -1,9 +1,17 @@
 ---
 # Fail2Ban role defaults
+#
+# Compliance references:
+#   - NIS2 Art 21.2(b) — incident handling
+#   - NIS2 Art 21.2(e) — network and information systems security
+#   - GDPR Art 32 — security of processing
+#   - POL-04 — incident response policy (detection and containment)
+#   - CRA Annex I Part I — protection of attack surface
+#   - ISO 27001:2022 A.8.16 — monitoring activities
 
 # Global settings
 fail2ban_ignoreip: "127.0.0.1/8 ::1"
-fail2ban_bantime: "1h"
+fail2ban_bantime: "6h"
 fail2ban_findtime: "10m"
 fail2ban_maxretry: 5
 fail2ban_backend: "systemd"
@@ -16,7 +24,14 @@ fail2ban_jails:
     port: ssh
     filter: sshd
     maxretry: 3
-    bantime: "1h"
+    bantime: "6h"
+
+# Recidive jail — escalating bans for repeat offenders
+# POL-04 P2 severity: suspected compromise
+fail2ban_recidive_enabled: true
+fail2ban_recidive_bantime: "1w"
+fail2ban_recidive_findtime: "1d"
+fail2ban_recidive_maxretry: 3
 
 # Additional custom jails (advanced)
 fail2ban_custom_jails: []

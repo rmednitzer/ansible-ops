@@ -1,0 +1,58 @@
+---
+# Log forwarding role for Ubuntu 24.04 LTS
+# CTL-0006, NIS2 Art 21.2(a), GDPR Art 5(2)
+
+- name: Ensure rsyslog is installed
+  ansible.builtin.apt:
+    name: rsyslog
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+  become: true
+  when: log_forwarding_enabled
+
+- name: Install rsyslog TLS module
+  ansible.builtin.apt:
+    name: rsyslog-gnutls
+    state: present
+  become: true
+  when:
+    - log_forwarding_enabled
+    - log_forwarding_tls_enabled
+
+- name: Deploy rsyslog forwarding configuration
+  ansible.builtin.template:
+    src: rsyslog-forwarding.conf.j2
+    dest: /etc/rsyslog.d/90-forwarding.conf
+    owner: root
+    group: root
+    mode: "0644"
+    backup: true
+  become: true
+  notify: Restart rsyslog
+  when:
+    - log_forwarding_enabled
+    - log_forwarding_server | length > 0
+
+- name: Deploy audit log forwarding via audisp
+  ansible.builtin.template:
+    src: audisp-remote.conf.j2
+    dest: /etc/audisp/plugins.d/au-remote.conf
+    owner: root
+    group: root
+    mode: "0640"
+  become: true
+  notify: Restart auditd
+  when:
+    - log_forwarding_enabled
+    - log_forwarding_audit
+    - log_forwarding_server | length > 0
+  failed_when: false
+
+- name: Ensure rsyslog is enabled and running
+  ansible.builtin.systemd:
+    name: rsyslog
+    state: started
+    enabled: true
+  become: true
+  when: log_forwarding_enabled
