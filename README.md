@@ -14,7 +14,7 @@ This repository enforces technical controls required by:
 | GDPR (EU 2016/679) / Austrian DSG | Art 5, 25, 32: data protection by design, security of processing |
 | ISO/IEC 27001:2022 | Annex A controls (A.5–A.8) |
 
-Controls are cross-referenced to the [platform-assurance](https://github.com/rmednitzer/platform-assurance) control catalog (`CTL-0001` through `CTL-0010`) and ISMS policy set (`POL-01` through `POL-10`).
+Controls and policies are defined in [`docs/compliance-controls.yml`](docs/compliance-controls.yml) and mapped to the regulatory frameworks above.
 
 ## Getting Started
 
@@ -95,7 +95,7 @@ Each role produces configuration artifacts that serve as compliance evidence:
 - **SSH banner** — legal monitoring notice per GDPR Art 5(2)
 - **Sysctl hardening** — kernel security parameters per CRA Annex I
 
-Log retention tiers are aligned with platform-assurance evidence schema:
+Log retention tiers are aligned with CTL-0004 evidence retention requirements (see `docs/compliance-controls.yml`):
 - `governance`: 10 years (3650 days)
 - `incidents`: 5 years (1825 days)
 - `ci`: 3 years (1095 days)

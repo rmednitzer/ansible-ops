@@ -1,0 +1,166 @@
+---
+# Compliance Control and Policy Reference
+#
+# This file defines the internal control catalog (CTL) and ISMS policy set (POL)
+# referenced throughout the ansible-ops repository. These controls and policies
+# are mapped to the regulatory frameworks listed in the Regulatory Scope section
+# of the README.
+#
+# Regulatory frameworks:
+#   - NIS2 Directive (EU 2022/2555) — Art 20-23
+#   - NISG 2026 (Austrian transposition) — effective 2026-10-01
+#   - Cyber Resilience Act (EU 2024/2847) — Annex I
+#   - GDPR (EU 2016/679) / Austrian DSG — Art 5, 25, 32
+#   - ISO/IEC 27001:2022 — Annex A controls
+
+# ---------------------------------------------------------------------------
+# Control Catalog (CTL)
+# ---------------------------------------------------------------------------
+
+controls:
+  CTL-0001:
+    title: "Federated IAM with MFA and auditable authorization"
+    description: >
+      Identity and access management controls requiring multi-factor
+      authentication, least-privilege authorization, and full auditability
+      of access grants and revocations.
+    regulatory_mapping:
+      - "NIS2 Art 21.2(i) — human resources security and access control"
+      - "GDPR Art 32 — security of processing"
+      - "ISO 27001:2022 A.5.15 — access control"
+      - "ISO 27001:2022 A.8.5 — secure authentication"
+    roles:
+      - ssh_hardening
+      - users
+
+  CTL-0004:
+    title: "Immutable evidence store with retention controls"
+    description: >
+      Compliance evidence (audit logs, integrity reports, incident records)
+      must be stored immutably with defined retention periods. Evidence
+      must support forensic investigation and regulatory audit.
+    regulatory_mapping:
+      - "NIS2 Art 21.2(a) — risk analysis and information system security"
+      - "GDPR Art 5(2) — accountability principle"
+      - "GDPR Art 32 — security of processing"
+      - "ISO 27001:2022 A.8.15 — logging"
+    retention_tiers:
+      governance: "10 years (3650 days)"
+      incidents: "5 years (1825 days)"
+      ci: "3 years (1095 days)"
+      dr_tests: "5 years (1825 days)"
+      security_audit: "1 year (365 days)"
+      operational: "90 days"
+    roles:
+      - auditd
+      - aide
+      - log_forwarding
+      - common
+
+  CTL-0006:
+    title: "Logging legality, minimisation, and forensic correlation"
+    description: >
+      All system logging must comply with data minimisation principles,
+      maintain forensic correlation capability through synchronised
+      timestamps, and meet legal admissibility requirements. Centralised
+      collection with TLS transport is required.
+    regulatory_mapping:
+      - "NIS2 Art 21.2(a) — risk analysis and information system security"
+      - "GDPR Art 5(1)(c) — data minimisation"
+      - "GDPR Art 5(2) — accountability"
+      - "ISO 27001:2022 A.8.15 — logging"
+      - "ISO 27001:2022 A.8.17 — clock synchronisation"
+    roles:
+      - auditd
+      - ntp
+      - log_forwarding
+      - common
+
+# ---------------------------------------------------------------------------
+# ISMS Policy Set (POL)
+# ---------------------------------------------------------------------------
+
+policies:
+  POL-03:
+    title: "Access control policy"
+    description: >
+      Enforces least-privilege access, default-deny posture, key-only
+      authentication for SSH, password complexity requirements, and
+      account lockout after failed attempts. Root login is disabled;
+      administrative access requires named accounts with sudo.
+    regulatory_mapping:
+      - "NIS2 Art 21.2(i) — human resources security and access control"
+      - "GDPR Art 32 — security of processing"
+      - "ISO 27001:2022 A.5.15 — access control"
+      - "ISO 27001:2022 A.8.3 — information access restriction"
+    roles:
+      - ssh_hardening
+      - users
+      - ufw
+
+  POL-04:
+    title: "Incident response policy"
+    description: >
+      Defines detection, containment, eradication, and recovery phases
+      for security incidents. Requires automated detection mechanisms
+      (fail2ban, AIDE, rkhunter), alerting pipelines, and timestamped
+      evidence for all incident-related actions.
+    regulatory_mapping:
+      - "NIS2 Art 21.2(b) — incident handling"
+      - "NIS2 Art 23 — reporting obligations"
+      - "GDPR Art 33 — notification of personal data breach"
+      - "ISO 27001:2022 A.5.24 — information security incident management"
+    roles:
+      - fail2ban
+      - aide
+      - rkhunter
+      - ntp
+      - log_forwarding
+
+  POL-06:
+    title: "Cryptography policy"
+    description: >
+      Mandates approved cryptographic algorithms and key management
+      practices. Prohibits MD5 and SHA-1 for compliance purposes.
+      Requires AES-256 or equivalent for symmetric encryption,
+      Ed25519/ECDSA for asymmetric operations, and TLS 1.2+ for
+      data in transit.
+    regulatory_mapping:
+      - "NIS2 Art 21.2(h) — policies on the use of cryptography"
+      - "GDPR Art 32(1)(a) — encryption of personal data"
+      - "ISO 27001:2022 A.8.24 — use of cryptography"
+    roles:
+      - ssh_hardening
+      - users
+      - ntp
+      - log_forwarding
+      - aide
+
+  POL-09:
+    title: "Data classification and handling policy"
+    description: >
+      Establishes data classification levels (Public, Internal,
+      Confidential, Restricted) and corresponding handling requirements.
+      Restricted data must not leak via core dumps, swap, or temporary
+      files. Full audit logging is required for Restricted data operations.
+    regulatory_mapping:
+      - "GDPR Art 5(1)(f) — integrity and confidentiality"
+      - "GDPR Art 25 — data protection by design"
+      - "ISO 27001:2022 A.5.12 — classification of information"
+      - "ISO 27001:2022 A.5.13 — labelling of information"
+    roles:
+      - common
+      - auditd
+
+  POL-10:
+    title: "Change management policy"
+    description: >
+      Requires all infrastructure changes to be tracked, authorised,
+      and auditable. Scheduled tasks (cron) and configuration changes
+      must be logged. Changes to critical system files trigger audit
+      events.
+    regulatory_mapping:
+      - "NIS2 Art 21.2(e) — security in network and information systems"
+      - "ISO 27001:2022 A.8.32 — change management"
+    roles:
+      - auditd

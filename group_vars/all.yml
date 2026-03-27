@@ -5,7 +5,7 @@
 # Compliance alignment:
 #   NIS2 (EU 2022/2555), GDPR (EU 2016/679), CRA (EU 2024/2847)
 #   Austrian NISG 2026, DSG
-#   platform-assurance: CTL-0001 through CTL-0010, POL-01 through POL-10
+#   Controls and policies: docs/compliance-controls.yml
 
 # --- Common role ---
 common_timezone: "UTC"

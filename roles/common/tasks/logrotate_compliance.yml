@@ -1,5 +1,5 @@
 ---
-# Log retention configuration aligned with platform-assurance evidence tiers
+# Log retention configuration (see docs/compliance-controls.yml)
 # CTL-0004 — immutable evidence store with retention controls
 # CTL-0006 — logging legality, minimisation, and forensic correlation
 # GDPR Art 5(1)(e) — storage limitation

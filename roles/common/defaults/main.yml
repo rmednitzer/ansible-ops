@@ -135,7 +135,7 @@ common_services_disable:
   - apport
   - whoopsie
 
-# Log retention categories aligned with platform-assurance evidence schema
+# Log retention categories (see docs/compliance-controls.yml)
 # CTL-0004 — immutable evidence store with retention controls
 # CTL-0006 — logging legality, minimisation, and forensic correlation
 common_log_retention:
