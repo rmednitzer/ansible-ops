@@ -65,6 +65,10 @@ auditd_compliance_rules: true
 aide_enabled: true
 # aide_mailto: "security@example.com"
 
+# --- rkhunter role ---
+rkhunter_enabled: true
+# rkhunter_mailto: "security@example.com"
+
 # --- Log forwarding role ---
 # Set log_forwarding_server to your SIEM/log aggregator endpoint
 # log_forwarding_server: "siem.example.com"

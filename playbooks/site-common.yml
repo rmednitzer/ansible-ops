@@ -27,8 +27,9 @@
 #   5. ufw             - Firewall (after SSH to avoid lockout)
 #   6. fail2ban        - Intrusion prevention (after firewall)
 #   7. aide            - File integrity monitoring
-#   8. log_forwarding  - Centralised log collection
-#   9. auditd          - Audit logging (last, to capture all changes)
+#   8. rkhunter        - Rootkit detection
+#   9. log_forwarding  - Centralised log collection
+#  10. auditd          - Audit logging (last, to capture all changes)
 
 - name: Apply common system management to all hosts
   hosts: all
@@ -76,6 +77,11 @@
       tags:
         - aide
         - fim
+        - compliance
+    - role: rkhunter
+      tags:
+        - rkhunter
+        - rootkit
         - compliance
     - role: log_forwarding
       tags:

@@ -1,0 +1,54 @@
+---
+# rkhunter (Rootkit Hunter) role defaults
+#
+# Compliance references:
+#   - NIS2 Art 21.2(a) — information system security (malware detection)
+#   - NIS2 Art 21.2(b) — incident handling (compromise detection)
+#   - GDPR Art 32 — security of processing (integrity assurance)
+#   - POL-04 — incident response policy (detection phase)
+#   - CRA Annex I Part I — secure-by-design, tamper detection
+#   - ISO 27001:2022 A.8.7 — protection against malware
+
+# Enable rkhunter
+rkhunter_enabled: true
+
+# Schedule rkhunter checks via cron
+rkhunter_cron_enabled: true
+rkhunter_cron_schedule: "0 3 * * *"
+
+# Report delivery
+rkhunter_report_path: "/var/log/rkhunter.log"
+rkhunter_mailto: ""
+
+# Update rkhunter database properties on deploy
+rkhunter_update_db: true
+
+# Automatically update file properties after package upgrades
+rkhunter_apt_hook: true
+
+# Configuration options
+rkhunter_enable_tests: "all"
+rkhunter_disable_tests: "suspscan hidden_ports hidden_procs deleted_files packet_cap_apps"
+
+# Allow known-good script replacements (Ubuntu defaults)
+rkhunter_allow_script_whitelisting: true
+rkhunter_scriptwhitelist:
+  - /usr/bin/egrep
+  - /usr/bin/fgrep
+  - /usr/bin/which
+  - /usr/bin/ldd
+
+# Allow /dev/.udev and /dev/.initramfs (normal on Ubuntu)
+rkhunter_allowhiddendir:
+  - /dev/.udev
+  - /dev/.static
+  - /dev/.initramfs
+
+rkhunter_allowhiddenfile:
+  - /dev/.blkid.tab
+  - /dev/.blkid.tab.old
+
+# Mirror for signature updates
+rkhunter_mirrors_mode: 0
+rkhunter_update_mirrors: 1
+rkhunter_web_cmd: "/usr/bin/wget"
