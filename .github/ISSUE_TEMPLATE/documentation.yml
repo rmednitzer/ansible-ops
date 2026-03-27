@@ -1,0 +1,31 @@
+---
+name: "\U0001F4DA Documentation"
+description: Suggest improvements to documentation
+labels:
+  - documentation
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Help us improve our documentation!
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What documentation needs to be added or improved?
+    validations:
+      required: true
+
+  - type: textarea
+    id: location
+    attributes:
+      label: Location
+      description: Where in the documentation is the change needed?
+      placeholder: "e.g., roles/common/README.md or README.md"
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other context or references

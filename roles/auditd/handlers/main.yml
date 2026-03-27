@@ -2,7 +2,7 @@
 # Auditd role handlers
 
 - name: Restart auditd
-  ansible.builtin.command:
-    cmd: systemctl restart auditd
+  ansible.builtin.systemd_service:
+    name: auditd
+    state: restarted
   become: true
-  changed_when: true
