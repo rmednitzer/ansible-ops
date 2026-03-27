@@ -1,6 +1,6 @@
 ---
 # AIDE file integrity monitoring role for Ubuntu 24.04 LTS
-# NIS2 Art 21.2(a), GDPR Art 32, POL-04, CTL-0004
+# NIS2 Art 21.2(a), GDPR Art 32, POL-02, CTL-0002
 
 - name: Install AIDE
   ansible.builtin.apt:

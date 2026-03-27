@@ -6,9 +6,9 @@
 #   - NIS2 Art 21.2(b) — incident handling (forensic evidence)
 #   - GDPR Art 5(2) — accountability (audit trail as compliance evidence)
 #   - GDPR Art 32 — security of processing (logging as security measure)
-#   - POL-09 — data classification: full audit for Restricted data operations
-#   - CTL-0004 — immutable evidence store with retention controls
-#   - CTL-0006 — logging legality, minimisation, and forensic correlation
+#   - POL-04 — data classification: full audit for Restricted data operations
+#   - CTL-0002 — immutable evidence store with retention controls
+#   - CTL-0003 — logging legality, minimisation, and forensic correlation
 #   - ISO 27001:2022 A.8.15 — logging
 #   - ISO 27001:2022 A.8.17 — clock synchronisation (chrony dependency)
 
@@ -17,7 +17,7 @@ auditd_buffer_size: 16384
 auditd_backlog_limit: 16384
 
 # Log settings — sized for compliance retention
-# CTL-0004 requires governance logs retained 10 years
+# CTL-0002 requires governance logs retained 10 years
 auditd_max_log_file: 100
 auditd_max_log_file_action: rotate
 auditd_num_logs: 20

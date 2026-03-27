@@ -14,12 +14,12 @@ This repository implements technical controls mapped to:
 - **GDPR (EU 2016/679) / Austrian DSG** — Art 5, 25, 32: data protection by design
 - **ISO/IEC 27001:2022** — Annex A controls
 
-Controls are cross-referenced to the `platform-assurance` repository:
-- Control catalog: `CTL-0001` through `CTL-0010`
-- ISMS policies: `POL-01` through `POL-10`
+Controls and policies are defined locally in `docs/compliance-controls.yml`:
+- Control catalog: `CTL-0001`, `CTL-0002`, `CTL-0003`
+- ISMS policies: `POL-01`, `POL-02`, `POL-03`, `POL-04`, `POL-05`
 
 When modifying roles, preserve compliance cross-references in `defaults/main.yml` headers.
-When adding new controls, map them to the relevant regulatory articles and platform-assurance control IDs.
+When adding new controls, map them to the relevant regulatory articles and add definitions to `docs/compliance-controls.yml`.
 
 ## Repository Structure
 

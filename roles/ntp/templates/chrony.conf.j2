@@ -1,6 +1,6 @@
 # Ansible managed - do not edit manually
 # Chrony configuration for Ubuntu 24.04 LTS
-# Compliance: CTL-0006, POL-04, ISO 27001:2022 A.8.17
+# Compliance: CTL-0003, POL-02, ISO 27001:2022 A.8.17
 
 # NTP servers
 {% for server in ntp_servers %}
@@ -15,7 +15,7 @@ pool {{ pool }}
 {% endif %}
 
 {% if ntp_nts_enabled and ntp_nts_servers | length > 0 %}
-# NTS-authenticated servers (POL-06 — cryptographic integrity of time source)
+# NTS-authenticated servers (POL-03 — cryptographic integrity of time source)
 {% for server in ntp_nts_servers %}
 server {{ server }}
 {% endfor %}
