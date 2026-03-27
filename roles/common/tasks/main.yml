@@ -42,3 +42,21 @@
   tags:
     - common
     - motd
+
+- name: Include kernel hardening tasks
+  ansible.builtin.import_tasks: kernel_hardening.yml
+  tags:
+    - common
+    - kernel-hardening
+
+- name: Include filesystem hardening tasks
+  ansible.builtin.import_tasks: filesystem_hardening.yml
+  tags:
+    - common
+    - filesystem-hardening
+
+- name: Include service hardening tasks
+  ansible.builtin.import_tasks: services.yml
+  tags:
+    - common
+    - services

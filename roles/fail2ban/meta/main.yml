@@ -1,0 +1,18 @@
+---
+galaxy_info:
+  role_name: fail2ban
+  author: ansible-ops
+  description: Fail2Ban intrusion prevention for Ubuntu 24.04 LTS
+  license: GPL-3.0-or-later
+  min_ansible_version: "2.15"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - noble
+  galaxy_tags:
+    - fail2ban
+    - security
+    - intrusion
+    - ubuntu
+
+dependencies: []

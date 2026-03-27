@@ -1,0 +1,12 @@
+---
+# Service hardening tasks
+
+- name: Disable unnecessary services
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    state: stopped
+    enabled: false
+    masked: true
+  loop: "{{ common_services_disable }}"
+  become: true
+  failed_when: false

@@ -1,0 +1,101 @@
+---
+# Kernel hardening tasks
+
+- name: Blacklist unnecessary kernel modules
+  ansible.builtin.copy:
+    dest: "/etc/modprobe.d/ansible-blacklist-{{ item }}.conf"
+    content: |
+      # Ansible managed
+      install {{ item }} /bin/true
+      blacklist {{ item }}
+    owner: root
+    group: root
+    mode: "0644"
+  loop: "{{ common_kernel_modules_blacklist }}"
+  become: true
+
+- name: Disable core dumps via limits.conf
+  ansible.builtin.copy:
+    dest: /etc/security/limits.d/99-ansible-coredump.conf
+    content: |
+      # Ansible managed
+      * hard core 0
+      * soft core 0
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+  when: common_disable_core_dumps
+
+- name: Disable core dumps via sysctl
+  ansible.posix.sysctl:
+    name: fs.suid_dumpable
+    value: "0"
+    sysctl_file: /etc/sysctl.d/90-ansible.conf
+    reload: true
+    state: present
+  become: true
+  when: common_disable_core_dumps
+
+- name: Disable core dumps in systemd
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/coredump.conf
+    regexp: "^#?Storage="
+    line: "Storage=none"
+  become: true
+  when: common_disable_core_dumps
+
+- name: Ensure ASLR is enabled
+  ansible.posix.sysctl:
+    name: kernel.randomize_va_space
+    value: "2"
+    sysctl_file: /etc/sysctl.d/90-ansible.conf
+    reload: true
+    state: present
+  become: true
+
+- name: Restrict kernel pointer exposure
+  ansible.posix.sysctl:
+    name: kernel.kptr_restrict
+    value: "2"
+    sysctl_file: /etc/sysctl.d/90-ansible.conf
+    reload: true
+    state: present
+  become: true
+
+- name: Restrict dmesg access to root
+  ansible.posix.sysctl:
+    name: kernel.dmesg_restrict
+    value: "1"
+    sysctl_file: /etc/sysctl.d/90-ansible.conf
+    reload: true
+    state: present
+  become: true
+
+- name: Restrict unprivileged BPF
+  ansible.posix.sysctl:
+    name: kernel.unprivileged_bpf_disabled
+    value: "1"
+    sysctl_file: /etc/sysctl.d/90-ansible.conf
+    reload: true
+    state: present
+  become: true
+
+- name: Restrict unprivileged user namespaces
+  ansible.posix.sysctl:
+    name: kernel.unprivileged_userns_clone
+    value: "0"
+    sysctl_file: /etc/sysctl.d/90-ansible.conf
+    reload: true
+    state: present
+  become: true
+  failed_when: false
+
+- name: Restrict ptrace scope
+  ansible.posix.sysctl:
+    name: kernel.yama.ptrace_scope
+    value: "2"
+    sysctl_file: /etc/sysctl.d/90-ansible.conf
+    reload: true
+    state: present
+  become: true

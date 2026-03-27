@@ -1,0 +1,8 @@
+---
+# Auditd role handlers
+
+- name: Restart auditd
+  ansible.builtin.command:
+    cmd: systemctl restart auditd
+  become: true
+  changed_when: true

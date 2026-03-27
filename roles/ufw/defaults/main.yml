@@ -1,0 +1,31 @@
+---
+# UFW firewall role defaults
+
+# Default policies
+ufw_default_incoming: "deny"
+ufw_default_outgoing: "allow"
+ufw_default_forward: "deny"
+
+# Enable logging
+ufw_logging: "on"
+
+# Rules to allow
+# Each item should have: rule, port, proto, and optionally src, comment
+ufw_rules:
+  - rule: allow
+    port: "22"
+    proto: tcp
+    comment: "SSH"
+
+# Raw rules for more complex scenarios (applied as-is)
+# Example: "allow from 10.0.0.0/8 to any port 5432 proto tcp"
+ufw_raw_rules: []
+
+# Rate limiting for SSH (limits connection attempts)
+ufw_rate_limit_ssh: true
+
+# Enable UFW after configuration
+ufw_enabled: true
+
+# Reset UFW before applying rules (use with caution)
+ufw_reset: false

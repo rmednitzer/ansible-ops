@@ -1,0 +1,26 @@
+# Ansible managed - do not edit manually
+# Sudo hardening configuration
+
+# Log all sudo commands
+Defaults  logfile="/var/log/sudo.log"
+Defaults  log_input, log_output
+Defaults  iolog_dir="/var/log/sudo-io/%{user}"
+
+{% if users_sudo_require_tty %}
+# Require TTY for sudo
+Defaults  requiretty
+{% endif %}
+
+# Timeout for sudo password cache (minutes)
+Defaults  timestamp_timeout=5
+
+# Show failed attempts on next successful login
+Defaults  lecture="always"
+
+# Restrict PATH for sudo commands
+Defaults  secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+{% if users_sudo_passwordless %}
+# Passwordless sudo for the sudo group
+%{{ users_sudo_group }}  ALL=(ALL:ALL) NOPASSWD: ALL
+{% endif %}

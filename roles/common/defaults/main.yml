@@ -76,3 +76,28 @@ common_journal_max_size: "500M"
 
 # MOTD banner
 common_motd_enabled: true
+
+# Kernel module blacklist (disable unnecessary/risky modules)
+common_kernel_modules_blacklist:
+  - cramfs
+  - freevxfs
+  - hfs
+  - hfsplus
+  - jffs2
+  - udf
+  - usb-storage
+  - dccp
+  - sctp
+  - rds
+  - tipc
+
+# Filesystem hardening - mount options for /tmp
+common_harden_tmp: true
+
+# Disable core dumps
+common_disable_core_dumps: true
+
+# Services to disable (common bloat on Ubuntu)
+common_services_disable:
+  - apport
+  - whoopsie

@@ -1,0 +1,27 @@
+---
+# Fail2Ban role defaults
+
+# Global settings
+fail2ban_ignoreip: "127.0.0.1/8 ::1"
+fail2ban_bantime: "1h"
+fail2ban_findtime: "10m"
+fail2ban_maxretry: 5
+fail2ban_backend: "systemd"
+fail2ban_banaction: "ufw"
+
+# Jails to enable
+fail2ban_jails:
+  - name: sshd
+    enabled: true
+    port: ssh
+    filter: sshd
+    maxretry: 3
+    bantime: "1h"
+
+# Additional custom jails (advanced)
+fail2ban_custom_jails: []
+
+# Send ban notifications via email
+fail2ban_notify_email: ""
+fail2ban_sender_email: "fail2ban@{{ ansible_fqdn }}"
+fail2ban_notify_action: "%(action_)s"

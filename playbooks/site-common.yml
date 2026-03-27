@@ -1,11 +1,21 @@
 ---
 # Site-wide common system management playbook
-# Applies base configuration, NTP, and SSH hardening to all Ubuntu hosts
+# Applies base configuration, security hardening, and best practices to all Ubuntu hosts
 #
 # Usage:
 #   ansible-playbook -i inventories/<env>/hosts playbooks/site-common.yml
 #   ansible-playbook -i inventories/<env>/hosts playbooks/site-common.yml --tags ntp
+#   ansible-playbook -i inventories/<env>/hosts playbooks/site-common.yml --tags firewall
 #   ansible-playbook -i inventories/<env>/hosts playbooks/site-common.yml --check --diff
+#
+# Role execution order:
+#   1. common      - Base packages, timezone, locale, sysctl, kernel/fs hardening
+#   2. users       - User accounts, sudo, password policy
+#   3. ntp         - Chrony time synchronization
+#   4. ssh_hardening - SSH server hardening
+#   5. ufw         - Firewall (after SSH to avoid lockout)
+#   6. fail2ban    - Intrusion prevention (after firewall)
+#   7. auditd      - Audit logging (last, to capture all changes)
 
 - name: Apply common system management to all hosts
   hosts: all
@@ -26,6 +36,9 @@
     - role: common
       tags:
         - common
+    - role: users
+      tags:
+        - users
     - role: ntp
       tags:
         - ntp
@@ -33,3 +46,14 @@
       tags:
         - ssh
         - hardening
+    - role: ufw
+      tags:
+        - ufw
+        - firewall
+    - role: fail2ban
+      tags:
+        - fail2ban
+    - role: auditd
+      tags:
+        - auditd
+        - audit
