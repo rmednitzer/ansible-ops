@@ -5,6 +5,7 @@
 #   - NIS2 Art 21.2(a) — information system security (time integrity)
 #   - GDPR Art 5(2) — accountability (timestamp integrity for evidence)
 #   - POL-02 — incident response (all actions timestamped)
+#   - POL-03 — cryptography policy (NTS-authenticated time sources)
 #   - CTL-0003 — logging legality: forensic correlation requires synced time
 #   - ISO 27001:2022 A.8.17 — clock synchronisation
 

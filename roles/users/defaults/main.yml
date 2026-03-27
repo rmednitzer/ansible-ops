@@ -7,6 +7,7 @@
 #   - GDPR Art 32 — security of processing
 #   - GDPR Art 25 — data protection by design and by default
 #   - POL-01 — access control policy (least privilege, default deny)
+#   - POL-03 — cryptography policy (approved hash algorithms)
 #   - CTL-0001 — federated IAM with MFA and auditable authorization
 #   - ISO 27001:2022 A.5.15 — access control
 #   - ISO 27001:2022 A.8.2 — privileged access rights

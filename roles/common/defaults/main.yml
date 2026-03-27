@@ -9,6 +9,7 @@
 #   - GDPR Art 5(1)(c) — data minimisation (IPv6 privacy extensions)
 #   - CRA Annex I Part I — secure-by-default, minimal attack surface
 #   - ISO 27001:2022 A.8.9 — configuration management
+#   - CTL-0002 — immutable evidence store with retention controls
 #   - CTL-0003 — logging legality, minimisation, and forensic correlation
 #   - POL-04 — data classification and handling policy
 
