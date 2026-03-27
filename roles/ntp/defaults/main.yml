@@ -4,9 +4,9 @@
 # Compliance references:
 #   - NIS2 Art 21.2(a) — information system security (time integrity)
 #   - GDPR Art 5(2) — accountability (timestamp integrity for evidence)
-#   - POL-02 — incident response (all actions timestamped)
-#   - POL-03 — cryptography policy (NTS-authenticated time sources)
-#   - CTL-0003 — logging legality: forensic correlation requires synced time
+#   - POL-002 — incident response (all actions timestamped)
+#   - POL-003 — cryptography policy (NTS-authenticated time sources)
+#   - CTL-003 — logging legality: forensic correlation requires synced time
 #   - ISO 27001:2022 A.8.17 — clock synchronisation
 
 # NTP servers — Austrian/European pools for regulatory jurisdiction alignment
@@ -36,7 +36,7 @@ ntp_rtcsync: true
 ntp_makestep_threshold: 1.0
 ntp_makestep_limit: 3
 
-# NTS (Network Time Security) — authenticated time per POL-03 cryptography policy
+# NTS (Network Time Security) — authenticated time per POL-003 cryptography policy
 # Enable when NTS-capable servers are available
 ntp_nts_enabled: false
 ntp_nts_servers: []

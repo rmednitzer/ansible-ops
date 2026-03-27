@@ -1,6 +1,6 @@
 # Ansible managed - do not edit manually
 # Fail2Ban local configuration
-# Compliance: NIS2 Art 21.2(b), POL-02
+# Compliance: NIS2 Art 21.2(b), POL-002
 
 [DEFAULT]
 ignoreip = {{ fail2ban_ignoreip }}
@@ -29,7 +29,7 @@ logpath  = {{ jail.logpath }}
 {% endfor %}
 {% if fail2ban_recidive_enabled %}
 # Recidive jail — escalating bans for persistent attackers
-# POL-02: P2 severity — suspected compromise pattern
+# POL-002: P2 severity — suspected compromise pattern
 [recidive]
 enabled  = true
 logpath  = /var/log/fail2ban.log

@@ -5,7 +5,7 @@
 #   - NIS2 Art 21.2(b) — incident handling
 #   - NIS2 Art 21.2(e) — network and information systems security
 #   - GDPR Art 32 — security of processing
-#   - POL-02 — incident response policy (detection and containment)
+#   - POL-002 — incident response policy (detection and containment)
 #   - CRA Annex I Part I — protection of attack surface
 #   - ISO 27001:2022 A.8.16 — monitoring activities
 
@@ -27,7 +27,7 @@ fail2ban_jails:
     bantime: "6h"
 
 # Recidive jail — escalating bans for repeat offenders
-# POL-02 P2 severity: suspected compromise
+# POL-002 P2 severity: suspected compromise
 fail2ban_recidive_enabled: true
 fail2ban_recidive_bantime: "1w"
 fail2ban_recidive_findtime: "1d"

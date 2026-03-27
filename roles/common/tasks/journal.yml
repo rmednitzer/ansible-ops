@@ -1,6 +1,6 @@
 ---
 # Systemd journal configuration
-# CTL-0003 — logging legality, minimisation, and forensic correlation
+# CTL-003 — logging legality, minimisation, and forensic correlation
 # GDPR Art 5(1)(e) — storage limitation
 
 - name: Configure systemd journal max size

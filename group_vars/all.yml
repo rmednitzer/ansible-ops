@@ -25,7 +25,7 @@ common_harden_tmp: true
 #   - "0.europe.pool.ntp.org iburst"
 
 # --- SSH hardening role ---
-# POL-01: root login disabled; key-only authentication
+# POL-001: root login disabled; key-only authentication
 ssh_permit_root_login: "no"
 ssh_password_authentication: false
 
@@ -44,7 +44,7 @@ ssh_password_authentication: false
 # fail2ban_ignoreip: "127.0.0.1/8 ::1 10.0.0.0/8"  # Add trusted networks
 
 # --- Users role ---
-# POL-01: least privilege; lock root by default
+# POL-001: least privilege; lock root by default
 users_lock_root: true
 users_password_min_length: 14
 users_password_remember: 12

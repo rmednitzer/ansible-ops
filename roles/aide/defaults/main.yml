@@ -5,9 +5,9 @@
 #   - NIS2 Art 21.2(a) — information system security
 #   - NIS2 Art 21.2(b) — incident handling (detect tampering)
 #   - GDPR Art 32 — security of processing (integrity assurance)
-#   - POL-02 — incident response policy (detection phase)
-#   - POL-03 — cryptography policy (hash algorithm selection)
-#   - CTL-0002 — immutable evidence store (integrity verification)
+#   - POL-002 — incident response policy (detection phase)
+#   - POL-003 — cryptography policy (hash algorithm selection)
+#   - CTL-002 — immutable evidence store (integrity verification)
 #   - CRA Annex I Part I — secure-by-design, tamper detection
 #   - ISO 27001:2022 A.8.9 — configuration management
 

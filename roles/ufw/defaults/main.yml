@@ -4,12 +4,12 @@
 # Compliance references:
 #   - NIS2 Art 21.2(e) — network and information systems security
 #   - GDPR Art 32 — security of processing
-#   - POL-01 — access control policy (default deny)
+#   - POL-001 — access control policy (default deny)
 #   - CRA Annex I Part I — protection of attack surface; secure interfaces
 #   - ISO 27001:2022 A.8.20 — network security
 #   - ISO 27001:2022 A.8.21 — security of network services
 
-# Default policies — POL-01: default deny
+# Default policies — POL-001: default deny
 ufw_default_incoming: "deny"
 ufw_default_outgoing: "allow"
 ufw_default_forward: "deny"
