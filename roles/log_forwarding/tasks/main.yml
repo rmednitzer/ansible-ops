@@ -34,10 +34,10 @@
     - log_forwarding_enabled
     - log_forwarding_server | length > 0
 
-- name: Deploy audit log forwarding via audisp
+- name: Configure audisp-remote destination
   ansible.builtin.template:
-    src: audisp-remote.conf.j2
-    dest: /etc/audisp/plugins.d/au-remote.conf
+    src: audisp-remote-server.conf.j2
+    dest: /etc/audit/audisp-remote.conf
     owner: root
     group: root
     mode: "0640"
@@ -47,10 +47,23 @@
     - log_forwarding_enabled
     - log_forwarding_audit
     - log_forwarding_server | length > 0
-  failed_when: false
+
+- name: Activate audisp-remote plugin
+  ansible.builtin.template:
+    src: audisp-remote.conf.j2
+    dest: /etc/audit/plugins.d/au-remote.conf
+    owner: root
+    group: root
+    mode: "0640"
+  become: true
+  notify: Restart auditd
+  when:
+    - log_forwarding_enabled
+    - log_forwarding_audit
+    - log_forwarding_server | length > 0
 
 - name: Ensure rsyslog is enabled and running
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: rsyslog
     state: started
     enabled: true

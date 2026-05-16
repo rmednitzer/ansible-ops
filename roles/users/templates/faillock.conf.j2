@@ -1,0 +1,11 @@
+# Ansible managed — account lockout policy
+# NIS2 Art 21.2(i) — access control
+# POL-001 — account lockout after repeated failed attempts
+deny = {{ users_faillock_deny }}
+fail_interval = {{ users_faillock_interval }}
+unlock_time = {{ users_faillock_unlock_time }}
+audit
+{% if users_faillock_even_deny_root %}
+even_deny_root
+root_unlock_time = {{ users_faillock_root_unlock_time }}
+{% endif %}

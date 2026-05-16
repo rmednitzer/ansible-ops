@@ -145,5 +145,7 @@
 {{ rule }}
 {% endfor %}
 
+{% if auditd_immutable %}
 # Make the configuration immutable (requires reboot to change)
 -e 2
+{% endif %}

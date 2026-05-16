@@ -65,7 +65,13 @@
   ansible.builtin.command:
     cmd: "ufw {{ item }}"
   loop: "{{ ufw_raw_rules }}"
-  changed_when: false
+  register: ufw_raw_result
+  # changed_when is evaluated per loop iteration; ufw_raw_result here is the
+  # current item's result, not the post-loop aggregate. default('') guards
+  # the rare case where stdout is absent so it can never raise undefined.
+  changed_when: >-
+    'Skipping adding existing rule' not in (ufw_raw_result.stdout | default(''))
+    and 'Skipping inserting existing rule' not in (ufw_raw_result.stdout | default(''))
   become: true
   when: ufw_raw_rules | length > 0
 

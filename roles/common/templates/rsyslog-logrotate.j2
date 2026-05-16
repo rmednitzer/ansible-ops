@@ -1,0 +1,45 @@
+# Ansible managed — compliance log retention
+# Replaces the distro default /etc/logrotate.d/rsyslog to apply
+# compliance-aligned retention WITHOUT creating duplicate logrotate
+# entries (logrotate aborts on duplicate "log entry" definitions).
+# Legal basis: NIS2 Art 21.2(a), GDPR Art 5(2), Art 32
+# Retention tiers: docs/compliance-controls.yml (CTL-002, CTL-003)
+
+# Security-relevant authentication log — security_audit tier
+# ({{ common_log_retention.security_audit }} days)
+/var/log/auth.log
+{
+        rotate {{ (common_log_retention.security_audit | int / 7) | round(0, 'ceil') | int }}
+        weekly
+        missingok
+        notifempty
+        compress
+        delaycompress
+        sharedscripts
+        postrotate
+                /usr/lib/rsyslog/rsyslog-rotate
+        endscript
+}
+
+# Operational system logs — operational tier
+# ({{ common_log_retention.operational }} days)
+/var/log/syslog
+/var/log/mail.log
+/var/log/kern.log
+/var/log/user.log
+/var/log/cron.log
+/var/log/debug
+/var/log/messages
+/var/log/daemon.log
+{
+        rotate {{ (common_log_retention.operational | int / 7) | round(0, 'ceil') | int }}
+        weekly
+        missingok
+        notifempty
+        compress
+        delaycompress
+        sharedscripts
+        postrotate
+                /usr/lib/rsyslog/rsyslog-rotate
+        endscript
+}

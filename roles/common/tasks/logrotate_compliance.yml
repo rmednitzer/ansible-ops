@@ -5,26 +5,21 @@
 # GDPR Art 5(1)(e) — storage limitation
 # GDPR Art 5(2) — accountability (retain audit evidence)
 # NIS2 Art 21.2(a) — information system security policies
+#
+# NOTE: /var/log/syslog and /var/log/auth.log are already managed by the
+# distro-shipped /etc/logrotate.d/rsyslog. Adding a second logrotate stanza
+# for the same path makes logrotate abort with "duplicate log entry" and
+# stops ALL rotation on the host. We therefore replace the rsyslog logrotate
+# file in place rather than adding overlapping compliance-* drop-ins.
 
-- name: Deploy compliance-aligned logrotate for auth logs
-  ansible.builtin.copy:
-    dest: /etc/logrotate.d/compliance-auth
-    content: |
-      # Ansible managed — compliance log retention
-      # Legal basis: NIS2 Art 21.2(a), GDPR Art 5(2), Art 32
-      # Retention tier: security_audit ({{ common_log_retention.security_audit }} days)
-      /var/log/auth.log {
-          rotate {{ (common_log_retention.security_audit | int / 7) | int }}
-          weekly
-          compress
-          delaycompress
-          missingok
-          notifempty
-          create 0640 syslog adm
-      }
+- name: Apply compliance retention to rsyslog-managed logs
+  ansible.builtin.template:
+    src: rsyslog-logrotate.j2
+    dest: /etc/logrotate.d/rsyslog
     owner: root
     group: root
     mode: "0644"
+    backup: true
   become: true
 
 - name: Deploy compliance-aligned logrotate for sudo logs
@@ -34,8 +29,11 @@
       # Ansible managed — compliance log retention
       # Legal basis: NIS2 Art 21.2(i), GDPR Art 5(2)
       # Retention tier: security_audit ({{ common_log_retention.security_audit }} days)
+      # /var/log/sudo.log is created by the users role (sudoers logfile=) and
+      # is NOT covered by any distro logrotate config, so a dedicated stanza
+      # here does not duplicate an existing entry.
       /var/log/sudo.log {
-          rotate {{ (common_log_retention.security_audit | int / 7) | int }}
+          rotate {{ (common_log_retention.security_audit | int / 7) | round(0, 'ceil') | int }}
           weekly
           compress
           delaycompress
@@ -48,26 +46,11 @@
     mode: "0644"
   become: true
 
-- name: Deploy compliance-aligned logrotate for syslog
-  ansible.builtin.copy:
-    dest: /etc/logrotate.d/compliance-syslog
-    content: |
-      # Ansible managed — compliance log retention
-      # Legal basis: NIS2 Art 21.2(a), GDPR Art 6(1)(f) legitimate interest
-      # Retention tier: operational ({{ common_log_retention.operational }} days)
-      /var/log/syslog {
-          rotate {{ (common_log_retention.operational | int / 7) | int }}
-          weekly
-          compress
-          delaycompress
-          missingok
-          notifempty
-          create 0640 syslog adm
-          postrotate
-              /usr/lib/rsyslog/rsyslog-rotate
-          endscript
-      }
-    owner: root
-    group: root
-    mode: "0644"
+- name: Remove superseded duplicate compliance logrotate drop-ins
+  ansible.builtin.file:
+    path: "/etc/logrotate.d/{{ item }}"
+    state: absent
+  loop:
+    - compliance-auth
+    - compliance-syslog
   become: true

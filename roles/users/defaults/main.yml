@@ -27,7 +27,11 @@ users_managed: []
 # Sudo configuration
 users_sudo_group: "sudo"
 users_sudo_passwordless: false
-users_sudo_require_tty: true
+# requiretty makes sudo refuse non-interactive (no-TTY) invocations. Ansible
+# become over SSH has no TTY, so enabling this locks the automation account
+# out of every subsequent privileged task. Leave false unless all management
+# is interactive; if enabled, exempt the automation user explicitly.
+users_sudo_require_tty: false
 
 # Password policy (PAM / login.defs)
 # GDPR Art 32 — appropriate technical measures
@@ -42,6 +46,16 @@ users_password_min_class: 4
 # Encryption method for stored passwords
 # POL-003 — cryptography policy: no MD5, no SHA-1
 users_password_encrypt_method: "YESCRYPT"
+
+# Account lockout (pam_faillock) — POL-001, NIS2 Art 21.2(i)
+# faillock.conf alone is inert; the role also wires pam_faillock into the
+# PAM stack (common-auth / common-account) so the lockout is enforced.
+users_faillock_enabled: true
+users_faillock_deny: 5
+users_faillock_interval: 900
+users_faillock_unlock_time: 900
+users_faillock_even_deny_root: true
+users_faillock_root_unlock_time: 60
 
 # Login restrictions
 users_login_timeout: 60
