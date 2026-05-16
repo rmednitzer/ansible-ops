@@ -1,7 +1,4 @@
 ---
 # UFW role handlers
-
-- name: Reload ufw
-  community.general.ufw:
-    state: reloaded
-  become: true
+# community.general.ufw applies rules immediately, so no reload handler
+# is required. Intentionally empty.

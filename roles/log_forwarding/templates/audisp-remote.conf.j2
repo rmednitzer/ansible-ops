@@ -1,9 +1,12 @@
 # Ansible managed - do not edit manually
-# audisp remote plugin configuration
+# audisp-remote plugin activation
 # Compliance: CTL-003 — centralised audit log collection
+#
+# audit 3.x (Ubuntu 24.04) reads dispatcher plugin configs from
+# /etc/audit/plugins.d/ — the legacy /etc/audisp/plugins.d/ path is gone.
 
 active = yes
 direction = out
-path = /sbin/audisp-remote
+path = /usr/sbin/audisp-remote
 type = always
 format = string

@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This is an Ansible operations repository for infrastructure automation and configuration management, aligned with EU and Austrian regulatory requirements. Licensed under GNU GPLv3.
+This is an Ansible operations repository for infrastructure automation and configuration management, aligned with EU and Austrian regulatory requirements. Licensed under the Apache License 2.0.
 
 ## Compliance Alignment
 
@@ -70,8 +70,8 @@ ansible-ops/
 
 ## Current State
 
-The repository contains a complete compliance-aligned hardening baseline with 9 roles:
-`common`, `users`, `ntp`, `ssh_hardening`, `ufw`, `fail2ban`, `aide`, `log_forwarding`, `auditd`.
+The repository contains a complete compliance-aligned hardening baseline with 10 roles:
+`common`, `users`, `ntp`, `ssh_hardening`, `ufw`, `fail2ban`, `aide`, `rkhunter`, `log_forwarding`, `auditd`.
 
 The main playbook `playbooks/site-common.yml` applies all roles to Ubuntu 24.04 LTS hosts.
 

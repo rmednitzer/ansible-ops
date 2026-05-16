@@ -1,0 +1,21 @@
+# Ansible managed - do not edit manually
+# audisp-remote destination configuration (/etc/audit/audisp-remote.conf)
+# Without remote_server set, activating the au-remote plugin sends audit
+# events nowhere — this file makes CTL-003 audit forwarding actually work.
+# Compliance: CTL-003, NIS2 Art 21.2(a), GDPR Art 5(2)
+
+remote_server = {{ log_forwarding_server }}
+port = {{ log_forwarding_audit_port }}
+transport = {{ log_forwarding_audit_transport }}
+mode = immediate
+queue_depth = {{ log_forwarding_queue_size }}
+format = managed
+network_retry_time = 1
+max_tries_per_record = 3
+max_time_per_record = 5
+heartbeat_timeout = 60
+network_failure_action = syslog
+disk_low_action = ignore
+disk_full_action = warn
+disk_error_action = warn
+remote_ending_action = reconnect

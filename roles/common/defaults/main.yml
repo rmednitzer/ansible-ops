@@ -126,6 +126,13 @@ common_kernel_modules_blacklist:
 
 # Filesystem hardening - mount options for /tmp
 common_harden_tmp: true
+common_tmp_size: "2G"
+# Immediately remount /tmp (and bind /var/tmp) when applying the baseline.
+# A live remount of /tmp on a running host disrupts services holding open
+# files there and discards existing /tmp contents. Default false: only the
+# fstab entry is written; hardened options take effect on next boot. Set
+# true for fresh hosts where an immediate remount is safe.
+common_harden_tmp_remount: false
 
 # Disable core dumps
 # POL-004 — Restricted data must not leak via core dumps

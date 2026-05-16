@@ -65,7 +65,9 @@
   ansible.builtin.command:
     cmd: "ufw {{ item }}"
   loop: "{{ ufw_raw_rules }}"
-  changed_when: false
+  register: ufw_raw_result
+  changed_when: "'Skipping adding existing rule' not in ufw_raw_result.stdout
+    and 'Skipping inserting existing rule' not in ufw_raw_result.stdout"
   become: true
   when: ufw_raw_rules | length > 0
 

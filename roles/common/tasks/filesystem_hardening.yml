@@ -6,8 +6,8 @@
     path: /tmp
     src: tmpfs
     fstype: tmpfs
-    opts: "defaults,noexec,nosuid,nodev,size=2G"
-    state: mounted
+    opts: "defaults,noexec,nosuid,nodev,size={{ common_tmp_size }}"
+    state: "{{ 'mounted' if common_harden_tmp_remount else 'present' }}"
   become: true
   when: common_harden_tmp
 
@@ -17,16 +17,27 @@
     src: /tmp
     fstype: none
     opts: "bind"
-    state: mounted
+    state: "{{ 'mounted' if common_harden_tmp_remount else 'present' }}"
   become: true
   when: common_harden_tmp
 
-- name: Set sticky bit on world-writable directories
+- name: Find world-writable directories without the sticky bit
   ansible.builtin.shell:
-    cmd: |
-      find / -xdev -type d \( -perm -0002 -a ! -perm -1000 \) -exec chmod a+t {} \; 2>/dev/null || true
+    cmd: "find / -xdev -type d -perm -0002 ! -perm -1000 -print 2>/dev/null || true"
+  register: common_world_writable_dirs
   changed_when: false
+  check_mode: false
   become: true
+
+- name: Set sticky bit on world-writable directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    mode: "a+t"
+  loop: "{{ common_world_writable_dirs.stdout_lines }}"
+  loop_control:
+    label: "{{ item }}"
+  become: true
+  when: common_world_writable_dirs.stdout_lines | length > 0
 
 - name: Restrict permissions on sensitive files
   ansible.builtin.file:
@@ -52,4 +63,3 @@
   loop_control:
     label: "{{ item.path }}"
   become: true
-  failed_when: false

@@ -44,3 +44,9 @@ auditd_compliance_rules: true
 
 # Additional custom audit rules (raw auditctl format)
 auditd_custom_rules: []
+
+# Make the audit configuration immutable (-e 2). CIS-recommended, but once
+# loaded the ruleset cannot change until reboot, and the Restart auditd
+# handler cannot live-reload rule changes. Keep true for compliance posture;
+# set false in environments where rules are tuned frequently.
+auditd_immutable: true

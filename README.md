@@ -105,4 +105,4 @@ Log retention tiers are aligned with CTL-002 evidence retention requirements (se
 
 ## License
 
-GNU General Public License v3 - see [LICENSE](LICENSE).
+Apache License 2.0 - see [LICENSE](LICENSE).

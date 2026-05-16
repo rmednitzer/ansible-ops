@@ -29,16 +29,27 @@
   become: true
   when: ssh_banner_enabled
 
+- name: Detect weak Diffie-Hellman moduli
+  ansible.builtin.command:
+    cmd: awk '$5 < 3071 {c++} END {print c+0}' /etc/ssh/moduli
+  register: ssh_weak_moduli
+  changed_when: false
+  check_mode: false
+  become: true
+
 - name: Remove small Diffie-Hellman moduli
   ansible.builtin.shell:
-    cmd: |
+    cmd: >-
       awk '$5 >= 3071' /etc/ssh/moduli > /etc/ssh/moduli.safe
-      mv /etc/ssh/moduli.safe /etc/ssh/moduli
-  changed_when: false
+      && [ -s /etc/ssh/moduli.safe ]
+      && mv /etc/ssh/moduli.safe /etc/ssh/moduli
+      || { rm -f /etc/ssh/moduli.safe; exit 1; }
+  when: ssh_weak_moduli.stdout | int > 0
+  changed_when: true
   become: true
 
 - name: Ensure sshd is enabled and running
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: ssh
     state: started
     enabled: true

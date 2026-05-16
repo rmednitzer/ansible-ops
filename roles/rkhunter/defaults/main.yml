@@ -23,8 +23,13 @@ rkhunter_mailto: ""
 # Update rkhunter database properties on deploy
 rkhunter_update_db: true
 
-# Automatically update file properties after package upgrades
-rkhunter_apt_hook: true
+# Automatically run `rkhunter --propupd` after every apt/dpkg operation.
+# This re-baselines the known-good file-property database on any package
+# change, so tampering that coincides with (or triggers) a package
+# operation gets silently absorbed into the baseline — defeating the
+# point of integrity checking. Default false; rely on the explicit
+# post-deploy propupd plus manual review of warnings instead.
+rkhunter_apt_hook: false
 
 # Configuration options
 rkhunter_enable_tests: "all"

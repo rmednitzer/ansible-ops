@@ -28,6 +28,10 @@ common_harden_tmp: true
 # POL-001: root login disabled; key-only authentication
 ssh_permit_root_login: "no"
 ssh_password_authentication: false
+# NOTE: ssh_port is consumed only by the ssh_hardening role. If you change
+# it, you MUST also update ufw_rules (below) and the fail2ban sshd jail
+# port, otherwise UFW (applied after SSH) will lock you out.
+# ssh_port: 22
 
 # --- UFW firewall role ---
 # ufw_rules:  # Uncomment and extend to allow additional ports
